@@ -62,6 +62,11 @@ private slots:
 
     void on_pushButton_MultiFieldSelect_clicked();
 
+public slots:
+
+    void slot_StartCamera();
+    void slot_CameraStop();
+
 private:
     Ui::DushenCameraWidget* ui;
 signals:

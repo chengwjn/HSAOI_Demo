@@ -101,5 +101,8 @@ signals:
 
     void sig_DeliverGlassInfo2Table(GLASSINFO* info);
     void sig_DeliverFlawPoints2Widget(QList<FlawPoint>* points);
+
+    void sig_StartButton2CameraStart();
+    void sig_StopButton2CameraStop();
 };
 #endif // MAINWINDOW_H

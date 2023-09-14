@@ -61,7 +61,8 @@ DushenCameraWidget::DushenCameraWidget(QWidget* parent, QString CameraName, int 
         if (CameraBase->IsOpened) {
             //设置为点击触发模式
             ui->cbx_SoftTrigger->setChecked(true);
-            on_pushButton_Start_clicked();
+            //已取消自动开始采集
+            //            on_pushButton_Start_clicked();
         }
     }
 }
@@ -157,7 +158,7 @@ void DushenCameraWidget::on_pushButton_Start_clicked()
         ui->pushButton_MultiFieldSelect->setEnabled(false);
     } else {
         CameraBase->slot_StopFunc();
-        ui->pushButton_Start->setText("Start");
+        ui->pushButton_Start->setText(QString::fromLocal8Bit("开始"));
         ui->pushButton_Open->setEnabled(true);
         ui->cbx_SoftTrigger->setEnabled(true);
         ui->pushButton_trigger->setEnabled(false);
@@ -292,4 +293,22 @@ void DushenCameraWidget::on_pushButton_MultiFieldSelect_clicked()
         Global::CameraField[m_CameraNum] = ui->comboBox_MultiFieldSelect->currentText().toInt();
         on_pushButton_Save_clicked();
     }
+}
+
+void DushenCameraWidget::slot_StartCamera()
+{
+    if (CameraBase->IsOpened) {
+        if (!CameraBase->IsStarted)
+            on_pushButton_Start_clicked();
+        else
+            log_singleton::Write_Log(QString::fromLocal8Bit("相机未启动"), Log_Level::Error);
+    } else
+        log_singleton::Write_Log(QString::fromLocal8Bit("相机未打开"), Log_Level::Error);
+}
+
+void DushenCameraWidget::slot_CameraStop()
+{
+    if (CameraBase->IsOpened)
+        if (CameraBase->IsStarted)
+            on_pushButton_Start_clicked();
 }

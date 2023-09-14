@@ -44,6 +44,13 @@ private:
     DushenCameraWidget* CameraWidget3;
 
     void InitCameras();
+
+public slots:
+    void slot_CameraStart();
+    void slot_CameraStop();
+signals:
+    void sig_CameraStart();
+    void sig_CameraStop();
 };
 
 #endif // CAMERASWIDGET_H

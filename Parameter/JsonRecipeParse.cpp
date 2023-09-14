@@ -25,7 +25,7 @@ void JsonRecipeParse::ReadParams()
     RecipeJson->getParameter(parent4GlassMeasure + "." + QString::fromLocal8Bit("对角线1_误差"), Diagonal1Error);
     RecipeJson->getParameter(parent4GlassMeasure + "." + QString::fromLocal8Bit("对角线2_误差"), Diagonal2Error);
 
-    QString parent4GlassMeasure2 = "GlassMeasure2";
+    QString parent4GlassMeasure2 = QString::fromLocal8Bit("缺陷检测");
     RecipeJson->getParameter(parent4GlassMeasure2 + ".Length_2", Length_2);
     RecipeJson->getParameter(parent4GlassMeasure2 + ".Width_2", Width_2);
     RecipeJson->getParameter(parent4GlassMeasure2 + ".Diagonal1_2", Diagonal1_2);

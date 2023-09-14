@@ -171,6 +171,8 @@ void MainWindow::Create_CameraShow()
     Camera_widget = new CamerasWidget(Dock_CameraShow, Camera0, Camera1, Camera2, Camera3);
     Dock_CameraShow->setWidget(Camera_widget);
     Dock_CameraShow->setFeatures(QDockWidget::DockWidgetFloatable);
+    connect(this, &MainWindow::sig_StartButton2CameraStart, Camera_widget, &CamerasWidget::slot_CameraStart);
+    connect(this, &MainWindow::sig_StopButton2CameraStop, Camera_widget, &CamerasWidget::slot_CameraStop);
 }
 
 void MainWindow::initCamera()
@@ -209,6 +211,7 @@ void MainWindow::slot_ActionStart()
     if (SystemStatus == 0) {
         log_singleton::Write_Log("Start Detect!", Log_Level::General);
         SystemStatus = 1;
+        emit sig_StartButton2CameraStart();
         time_1->start(50);
     }
 }
@@ -218,6 +221,7 @@ void MainWindow::slot_ActionStop()
     if (SystemStatus == 1) {
         log_singleton::Write_Log("Stop Detect", Log_Level::General);
         SystemStatus = 0;
+        emit sig_StopButton2CameraStop();
         time_1->stop();
     }
 }
