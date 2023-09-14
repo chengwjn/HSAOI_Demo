@@ -1,6 +1,6 @@
 ﻿/*******************************************
     @ClassName   : JsonRecipeWidget
-    @Description : Json配方参数管理界面类
+    @Description : Json工单参数管理界面类
     @Creator     : Chengwenjie
     @Author      : Chengwenjie
     @Date        : 2023-07-25
@@ -9,8 +9,6 @@
 #define JSONRECIPEWIDGET_H
 
 #include "Parameter/JsonParse.h"
-#include "Parameter/JsonRecipeParse.h"
-#include "Parameter/RecipeWidget.h"
 #include <QComboBox>
 #include <QDateTime>
 #include <QDialog>
@@ -32,10 +30,10 @@ class JsonRecipeWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit JsonRecipeWidget(QWidget* parent = nullptr, JsonRecipeParse* RecipeParse = nullptr);
+    explicit JsonRecipeWidget(QWidget* parent = nullptr, JsonParse* Recipe = nullptr);
     ~JsonRecipeWidget();
 
-    JsonRecipeParse* CurrentRecipe;
+    JsonParse* CurrentRecipe;
 
 private:
     Ui::JsonRecipeWidget* ui;
@@ -56,8 +54,8 @@ private:
     QLabel* lbl_OperationResult;
     QTreeWidget* TreeWidget;
 
-    QTreeWidgetItem* rootItem;
-    QTreeWidgetItem* rootItem1;
+    QTreeWidgetItem* rootItem4GlassMeasure;
+    QTreeWidgetItem* rootItem4FlawDetect;
     QTreeWidgetItem* rootItem2;
 
     bool isNeedReplot = false;
@@ -66,7 +64,7 @@ public slots:
     void SelectRecipe();
     void CreateNewRecipe();
     void DeleteRecipe();
-    void slot_RecipeChanged(JsonRecipeParse* m_RecipeChanged);
+    void slot_RecipeChanged(JsonParse* m_RecipeChanged);
 
     void ReadValue2Tree();
     void SaveValue2tree();

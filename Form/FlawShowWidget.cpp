@@ -4,10 +4,10 @@
 #include <QPainter>
 #include <QtDebug>
 
-FlawShowWidget::FlawShowWidget(QWidget* parent, JsonRecipeParse* recipe)
+FlawShowWidget::FlawShowWidget(QWidget* parent, JsonParse* recipe)
     : QWidget(parent)
 {
-    m_recipe = recipe;
+    RECIPE = recipe;
     m_plot = new QwtPlot(this);
 
     slot_ChangeFlawShow();
@@ -153,8 +153,16 @@ void FlawShowWidget::slot_GetFlawPoints(QList<FlawPoint>* n_FlawPointList)
 
 void FlawShowWidget::slot_ChangeFlawShow()
 {
-    int MaxLength = m_recipe->Length > 2000 ? (m_recipe->Length + 100) : 2100;
-    int MaxWidth = m_recipe->Width > 1500 ? (m_recipe->Width + 100) : 1600;
+    QString Keyword4Length = QString::fromLocal8Bit("尺寸测量") + "." + QString::fromLocal8Bit("长度");
+    QString Keyword4Width = QString::fromLocal8Bit("尺寸测量") + "." + QString::fromLocal8Bit("长度");
+    double length;
+    RECIPE->getParameter(Keyword4Length, length);
+    double width;
+    RECIPE->getParameter(Keyword4Width, width);
+
+    int MaxLength = length > 2000 ? (length + 100) : 2100;
+    int MaxWidth = width > 1500 ? (width + 100) : 1600;
+
     m_plot->setAxisScale(QwtPlot::xBottom, 0, MaxLength);
     m_plot->setAxisScale(QwtPlot::yLeft, 0, MaxWidth);
 }

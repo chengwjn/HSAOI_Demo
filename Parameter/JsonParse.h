@@ -1,6 +1,6 @@
 ﻿/*******************************************
     @ClassName   : JsonParse
-    @Description : 操作json文档，目前为了适配halcon的dict文件，仅用作参数设置
+    @Description : 读写json文档
     @Description2: Qt中读写使用英文
     @Creator     : Chengwenjie
     @Author      : Chengwenjie
@@ -33,34 +33,33 @@ typedef enum _ELE_TYPE4JSON {
 
 typedef struct _VALUE_ELEMENT4JSON {
     QString name;
+    QString value;
     _ELE_TYPE4JSON valType;
     bool bValChanged;
-    QString parent;
-    QString value;
 } _VALUE_ELEMENT4JSON;
 
 class JsonParse {
 public:
-    JsonParse(QString FilePath);
+    JsonParse(QString FileName);
 
     int SaveParasToFile(); //只有修改了值的变量保存
     int InitParams(); //初始化参数
+    int ChangeParams(QString FileName);
 
     //name读写时格式为"parent.name"
     bool setParameter(QString name, double& value);
-    bool setParameter(QString name, int& value);
     bool setParameter(QString name, QString& value);
 
     //name读写时格式为"parent.name"
     bool getParameter(QString name, double& value);
-    bool getParameter(QString name, int& value);
     bool getParameter(QString name, QString& value);
+
+    QHash<QString, _VALUE_ELEMENT4JSON> HASHTABLE;
 
 private:
     unsigned char getValType(QString str);
 
     QString m_filepath;
-    QHash<QString, _VALUE_ELEMENT4JSON> m_val_hashtable;
 
     //以下均为处理json文件最后存入Hash表中
     int parse_app_json_file(QString FileName);

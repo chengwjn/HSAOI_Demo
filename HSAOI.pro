@@ -33,6 +33,7 @@ SOURCES += \
     Form/FlawShowWidget.cpp \
     Form/TitleBar.cpp \
     Form/glassstatictablewidget.cpp \
+    Form/msvlcdnumclockwidget.cpp \
     Form/singleflawshowwidget.cpp \
     Global.cpp \
     ImageProcess/ImageCombine.cpp \
@@ -47,10 +48,7 @@ SOURCES += \
     NavigationBar/CNavView.cpp \
     Parameter/CameraParamsWidget.cpp \
     Parameter/JsonParse.cpp \
-    Parameter/JsonRecipeParse.cpp \
     Parameter/JsonRecipeWidget.cpp \
-    Parameter/RecipeParse.cpp \
-    Parameter/RecipeWidget.cpp \
     Parameter/XmlParse.cpp \
     SystemSettingForm.cpp \
     common_func.cpp \
@@ -70,6 +68,7 @@ HEADERS += \
     Form/FlawShowWidget.h \
     Form/TitleBar.h \
     Form/glassstatictablewidget.h \
+    Form/msvlcdnumclockwidget.h \
     Form/singleflawshowwidget.h \
     Global.h \
     ImageProcess/ImageCombine.h \
@@ -85,10 +84,7 @@ HEADERS += \
     NavigationBar/CNavView.h \
     Parameter/CameraParamsWidget.h \
     Parameter/JsonParse.h \
-    Parameter/JsonRecipeParse.h \
     Parameter/JsonRecipeWidget.h \
-    Parameter/RecipeParse.h \
-    Parameter/RecipeWidget.h \
     Parameter/XmlParse.h \
     SystemSettingForm.h \
     common_func.h \
@@ -99,11 +95,11 @@ FORMS += \
     Camera/Dushen/DushenCameraWidget.ui \
     Camera/DushenSample/BasicFunction.ui \
     Form/CamerasWidget.ui \
+    Form/msvlcdnumclockwidget.ui \
     Form/singleflawshowwidget.ui \
     LightControl/LightControl.ui \
     MainForm.ui \
     Parameter/JsonRecipeWidget.ui \
-    Parameter/RecipeWidget.ui \
     SystemSettingForm.ui \
     mainwindow.ui
 

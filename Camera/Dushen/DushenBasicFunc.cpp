@@ -11,15 +11,17 @@
     @Param3      : CameraNum,相机编号
     @Date        : 2023-07-03
 */
-DushenBasicFunc::DushenBasicFunc(QObject* parent, int CameraNum, JsonRecipeParse* recipe)
+DushenBasicFunc::DushenBasicFunc(QObject* parent, int CameraNum)
     : QObject(parent)
 {
-    CameraParamFromRecipe = recipe;
+//    CameraParamFromRecipe = recipe;
 
     m_handle = 0;
     SoftTriggerFlag = false;
-    fExpoTime = CameraParamFromRecipe->Camera_ExposureTime[CameraNum];
-    fAnalogGain = CameraParamFromRecipe->Camera_Gain[CameraNum]; //double转float可能出现问题
+    fExpoTime = 0;
+    fAnalogGain = 0;
+    //    fExpoTime = CameraParamFromRecipe->Camera_ExposureTime[CameraNum];
+    //    fAnalogGain = CameraParamFromRecipe->Camera_Gain[CameraNum]; //double转float可能出现问题
     QuickRoiSel = 0;
     ColorSolutionSel = 0;
     bTrigStatus = false;

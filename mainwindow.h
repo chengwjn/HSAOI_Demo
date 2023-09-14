@@ -10,8 +10,8 @@
 #include "LightControl/LightControl.h"
 #include "Parameter/JsonParse.h"
 #include "Parameter/JsonRecipeWidget.h"
-#include "Parameter/RecipeParse.h"
-#include "Parameter/RecipeWidget.h"
+//#include "Parameter/RecipeParse.h"
+//#include "Parameter/RecipeWidget.h"
 #include "SystemSettingForm.h"
 #include "log_singleton.h"
 #include <QDockWidget>
@@ -32,7 +32,8 @@ public:
     ~MainWindow();
 
     //工单
-    JsonRecipeParse* JsonRecipeParam;
+    //    JsonRecipeParse* JsonRecipeParam;
+    JsonParse* JsonParam;
 
     //相机
     DushenBasicFunc* Camera0;
@@ -96,7 +97,7 @@ public slots:
     void slot_CreateNewInfo();
     void slot_FromSystemSettings_FlawWidgetNeedReplot();
 signals:
-    void sig_DeliverNewRecipe(JsonRecipeParse* Recipe);
+    //    void sig_DeliverNewRecipe(JsonRecipeParse* Recipe);
     void sig_FlawWidgetChange();
 
     void sig_DeliverGlassInfo2Table(GLASSINFO* info);

@@ -1,7 +1,14 @@
-﻿#ifndef CAMERAPARAMSWIDGET_H
+﻿/*******************************************
+    @ClassName   : CameraParamsWidget
+    @Description : 相机操作界面
+    @Creator     : Chengwenjie
+    @Author      : Chengwenjie
+    @Date        : 2023-09-14
+********************************************/
+#ifndef CAMERAPARAMSWIDGET_H
 #define CAMERAPARAMSWIDGET_H
 
-#include "Parameter/JsonRecipeParse.h"
+//#include "Parameter/JsonRecipeParse.h"
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QTreeWidget>
@@ -12,9 +19,9 @@
 class CameraParamsWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit CameraParamsWidget(QWidget* parent = nullptr, JsonRecipeParse* RecipeParse = nullptr);
-
-    JsonRecipeParse* CurrentRecipe;
+    //    explicit CameraParamsWidget(QWidget* parent = nullptr, JsonRecipeParse* RecipeParse = nullptr);
+    explicit CameraParamsWidget(QWidget* parent = nullptr);
+    //    JsonRecipeParse* CurrentRecipe;
 
 private:
     QPushButton* btn_Save;

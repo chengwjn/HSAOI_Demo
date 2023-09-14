@@ -3,11 +3,11 @@
 #include "NavigationBar/CNavModel.h"
 #include "ui_SystemSettingForm.h"
 
-SystemSettingForm::SystemSettingForm(RegParasComm& sig_comm, JsonRecipeParse& JsonRecipe, QWidget* parent)
+SystemSettingForm::SystemSettingForm(RegParasComm& sig_comm, JsonParse& JsonRecipe, QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::SystemSettingForm)
     , m_pSig_comm(sig_comm)
-    , m_JsonRecipe(JsonRecipe)
+    , JSONRECIPE(JsonRecipe)
 {
     ui->setupUi(this);
 
@@ -45,20 +45,20 @@ void SystemSettingForm::SetNavigationBar()
 void SystemSettingForm::InitForm()
 {
     List_View->setFixedWidth(180);
-    this_JsonRecipeWidget = new JsonRecipeWidget(this, &m_JsonRecipe);
+    this_JsonRecipeWidget = new JsonRecipeWidget(this, &JSONRECIPE);
     stack_widget->addWidget(this_JsonRecipeWidget);
 
-    this_CameraParamsWidget = new CameraParamsWidget(this, &m_JsonRecipe);
-    stack_widget->addWidget(this_CameraParamsWidget);
+    //    this_CameraParamsWidget = new CameraParamsWidget(this, &JSONRECIPE);
+    //    stack_widget->addWidget(this_CameraParamsWidget);
 
     LightControlWidget = new LightControl(m_pSig_comm, this);
     stack_widget->addWidget(LightControlWidget);
 
-    connect(this_JsonRecipeWidget, SIGNAL(sig_DeliverName(QString)), this, SLOT(slot_JsonRecipeName_Changed(QString)));
-    connect(this, SIGNAL(sig_Deliver_NewRecipe(JsonRecipeParse*)), this_JsonRecipeWidget, SLOT(slot_RecipeChanged(JsonRecipeParse*)));
+    //    connect(this_JsonRecipeWidget, SIGNAL(sig_DeliverName(QString)), this, SLOT(slot_JsonRecipeName_Changed(QString)));
+    //    connect(this, SIGNAL(sig_Deliver_NewRecipe(JsonRecipeParse*)), this_JsonRecipeWidget, SLOT(slot_RecipeChanged(JsonRecipeParse*)));
 
-    connect(this_JsonRecipeWidget, SIGNAL(sig_CameraParamsChangeRecipe()), this_CameraParamsWidget, SLOT(slot_ChangeRecipe()));
-    connect(this_JsonRecipeWidget, SIGNAL(sig_FlawWidgetShouldReplot()), this, SLOT(slot_Deliver_FromJsonRecipe_FlawWidgetNeedReplot()));
+    //    connect(this_JsonRecipeWidget, SIGNAL(sig_CameraParamsChangeRecipe()), this_CameraParamsWidget, SLOT(slot_ChangeRecipe()));
+    //    connect(this_JsonRecipeWidget, SIGNAL(sig_FlawWidgetShouldReplot()), this, SLOT(slot_Deliver_FromJsonRecipe_FlawWidgetNeedReplot()));
 }
 
 void SystemSettingForm::slot_ListView_Pressed()
@@ -84,10 +84,10 @@ void SystemSettingForm::slot_ListView_Pressed()
     }
 }
 
-void SystemSettingForm::slot_JsonRecipe_Changed(JsonRecipeParse* NewRecipe)
-{
-    emit sig_Deliver_NewRecipe(NewRecipe);
-}
+//void SystemSettingForm::slot_JsonRecipe_Changed(JsonRecipeParse* NewRecipe)
+//{
+//    emit sig_Deliver_NewRecipe(NewRecipe);
+//}
 
 void SystemSettingForm::slot_JsonRecipeName_Changed(QString NewRecipeName)
 {
