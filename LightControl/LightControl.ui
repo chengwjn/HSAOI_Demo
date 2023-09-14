@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LightControl</class>
+ <widget class="QWidget" name="LightControl">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>520</width>
+    <height>640</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>设置</string>
+  </property>
+  <widget class="QPushButton" name="Set">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>170</y>
+     <width>91</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Set</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Get">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>100</y>
+     <width>91</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Get</string>
+   </property>
+  </widget>
+  <widget class="QTreeWidget" name="treeWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>390</width>
+     <height>620</height>
+    </rect>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectItems</enum>
+   </property>
+   <column>
+    <property name="text">
+     <string>名称</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>值</string>
+    </property>
+   </column>
+   <item>
+    <property name="text">
+     <string>编码器参数</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>编码器单位刻度</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="flags">
+      <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>编码脉冲滤波</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>编码器1结束标志</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>编码器1当前值</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>编码器2结束标志</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>编码器2当前值</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>编码器脉冲计数</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>编码通道</string>
+     </property>
+    </item>
+   </item>
+   <item>
+    <property name="text">
+     <string>控制器系统参数</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>像素精度</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>结束信号反馈</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>光电信号脉冲</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>相机触发脉冲</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>光电相机距离</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>相机拍照时刻</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>帧同步持续时间</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>模块使能信号</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>相机延时拍照行数</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>内部行频反馈</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>水冷控制器</string>
+     </property>
+    </item>
+   </item>
+   <item>
+    <property name="text">
+     <string>光源控制器参数</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>光场1延时时间</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>光场1发光时间</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>光场2延时时间</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>光场2发光时间</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>光场3延时时间</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>光场3发光时间</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>光场4延时时间</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>光场4发光时间</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>光场5延时时间</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>光场5发光时间</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>光场6延时时间</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>光场6发光时间</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>相机与光场控制</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>信号测试</string>
+     </property>
+    </item>
+   </item>
+  </widget>
+  <widget class="QPushButton" name="Save">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>240</y>
+     <width>91</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ProcessParas>
+    <!--尺寸参数-->
+    <Length type="DOUBLE" value="120"/>
+    <LengthError type="DOUBLE" value="0.1"/>
+    <Width type="DOUBLE" value="120"/>
+    <WidthError type="DOUBLE" value="0.1"/>
+    <Diagonal1 type="DOUBLE" value="141.4"/>
+    <Diagonal1Error type="DOUBLE" value="0.1"/>
+    <Diagonal2 type="DOUBLE" value="141.4"/>
+    <Diagonal2Error type="DOUBLE" value="0.1"/>
+    <!--缺陷参数-->
+    <FlawNumber type="INT32" value="5"/>
+</ProcessParas>

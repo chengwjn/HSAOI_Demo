@@ -1,0 +1,83 @@
+QMainWindow::separator {
+    background: #ACACAC;
+    width: 1px; /* when vertical */
+    height: 1px; /* when horizontal */
+}
+
+
+QMainWindow{
+	border-style: solid;
+    border-color: #103667;
+}
+
+QMainWindow::title{
+	background: #ECECEC;
+}
+
+.QWidget {
+   background-color: #ECECEC;
+}
+
+
+QDockWidget {
+    border: 1px solid lightgray;
+}
+
+QDockWidget::title {
+    text-align: left; /* align the text to the left */
+    background: lightgray;
+    padding-left: 5px;
+}
+
+QDockWidget::close-button, QDockWidget::float-button {
+    border: 1px solid transparent;
+    background: darkgray;
+    padding: 0px;
+}
+
+QDockWidget::close-button:hover, QDockWidget::float-button:hover {
+    background: gray;
+}
+
+QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
+    padding: 1px -1px -1px 1px;
+}
+
+
+QSplitter::handle{
+   background-color: #ACACAC;
+}
+
+QSplitter::handle:horizontal {
+    width: 2px;
+}
+
+QSplitter::handle:vertical {
+    height: 2px;
+}
+
+
+QToolTip {
+    border: 1px solid #103667;
+    padding: 2px;
+    border-radius: 1px;
+    opacity: 200;
+}
+
+QTableView {
+    background: #D7D7D7;
+}
+
+QTreeView {
+    background: #D7D7D7;
+}
+QTreeView::branch:has-siblings:!adjoins-item {
+    border : 6;
+}
+
+
+QTreeView::branch:!has-children:!has-siblings:adjoins-item {
+    border : 0;
+}
+
+

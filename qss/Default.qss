@@ -1,0 +1,35 @@
+
+.QWidget {
+   background-color: #626262;
+}
+
+QSplitter::handle{
+   background-color: gray;
+}
+
+QSplitter::handle:horizontal {
+    width: 2px;
+}
+
+QSplitter::handle:vertical {
+    height: 2px;
+}
+
+
+QToolTip {
+    border: 2px solid darkkhaki;
+    padding: 5px;
+    border-radius: 3px;
+    opacity: 200;
+}
+
+QTableView {
+    background: cyan;
+}
+
+QTreeView {
+    background: cyan;
+}
+
+
+

@@ -1,0 +1,50 @@
+
+
+.QWidget {
+   background-color: #D7D7D7;
+}
+
+QSplitter::handle{
+   background-color: #ACACAC;;
+}
+
+QSplitter::handle:horizontal {
+    width: 1px;
+}
+
+QSplitter::handle:vertical {
+    height: 1px;
+}
+
+
+QToolTip {
+    border: 1px solid #103667;
+    padding: 2px;
+    border-radius: 1px;
+    opacity: 200;
+}
+
+QTableView {
+    background: #D7D7D7;
+	font-size: 15px；
+}
+
+QTableView::item:selected{
+    background: #1B4F93;
+	color:#FFFFFF;
+}
+
+QTreeView {
+    background: #D7D7D7;
+	font-size: 15px；
+}
+QTreeView::branch:has-siblings:!adjoins-item {
+    border : 6;
+}
+
+
+QTreeView::branch:!has-children:!has-siblings:adjoins-item {
+    border : 0;
+}
+
+

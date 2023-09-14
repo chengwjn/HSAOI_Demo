@@ -1,0 +1,41 @@
+
+
+.QWidget {
+   background-color: #D7D7D7;
+}
+
+QWidget {
+   font:12px "宋体";
+}
+
+QSplitter::handle{
+   background-color: #7388C1;;
+}
+
+QSplitter::handle:horizontal {
+    width: 2px;
+}
+
+QSplitter::handle:vertical {
+    height: 2px;
+}
+
+
+QToolTip {
+    border: 1px solid #103667;
+    padding: 2px;
+    border-radius: 1px;
+    opacity: 200;
+}
+
+QTableView {
+    background: #D7D7D7;
+	font-size:12px;
+}
+
+QTreeView {
+    background: #D7D7D7;
+	font-size: 12px;
+}
+
+

@@ -1,0 +1,63 @@
+
+.QWidget {
+   background-color: #ECECEC;
+}
+
+QWidget {
+   font:12px "宋体";
+}
+
+
+
+
+QPushButton:hover {
+   background-color: #7D9EC0;
+}
+
+
+QPushButton:pressed {
+   background-color: #878787;
+   padding-left: 2px;
+   padding-top: 2px;
+}
+
+QSplitter::handle{
+   background: #BCBCBC;
+}
+
+QSplitter::handle:horizontal {
+    width: 1px;
+}
+
+QSplitter::handle:vertical {
+    height: 1px;
+}
+
+
+QToolTip {
+    border: 1px solid #103667;
+    padding: 2px;
+    border-radius: 1px;
+    opacity: 200;
+}
+
+
+QTableView {
+    background: #DCDCDC;
+	font:12px "Courier New";
+}
+
+
+QTreeView{
+    background: #DCDCDC;
+	font:12px "Courier New";
+}
+
+QTreeView::item{
+	height:25px;
+}
+
+QTreeView::item:has-children{
+	height:20px;
+}
+

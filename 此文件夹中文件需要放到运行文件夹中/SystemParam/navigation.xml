@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<FirstNode lable="系统信息" collapse="0" index="0">
+		<SecondNode lable="配方参数" index="1"></SecondNode>
+		<SecondNode lable="相机参数" index="2"></SecondNode>
+		<SecondNode lable="检测参数" index="3"></SecondNode>
+		<SecondNode lable="系统运行参数" index="4"></SecondNode>
+	</FirstNode>
+	<FirstNode lable="信号平台" index="1"></FirstNode>
+	<FirstNode lable="用户管理" index="2"></FirstNode>
+</root>

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ProcessParas>
+    <SystemName type="QSTRING" value="皓视视觉检测通用平台"/>
+    <!--相机参数-->
+    <Camera0 type="QSTRING" value="DSXL810002139"/>
+    <Camera0Field type="INT32" value="6"/>
+    <Camera1 type="QSTRING" value="DSXL810002139"/>
+    <Camera1Field type="INT32" value="6"/>
+    <Camera2 type="QSTRING" value=""/>
+    <Camera2Field type="INT32" value="6"/>
+    <Camera3 type="QSTRING" value=""/>
+    <Camera3Field type="INT32" value="6"/>
+    <!--配方参数-->
+    <CurrentRecipe type="QSTRING" value="RecipeTest"/>
+</ProcessParas>
