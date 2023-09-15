@@ -40,23 +40,23 @@ void GlassStatisticTableWidget::InitTable(QTableWidget* tableWidget)
     // 设置表头
     QStringList headerLabels;
     //QString::fromLocal8Bit不会乱码
-    headerLabels << QString::fromLocal8Bit("ID")
-                 << QString::fromLocal8Bit("时间")
-                 << QString::fromLocal8Bit("OK/NG")
-                 << QString::fromLocal8Bit("尺寸OK/NG")
-                 << QString::fromLocal8Bit("长度")
-                 << QString::fromLocal8Bit("宽度")
-                 << QString::fromLocal8Bit("对角线1")
-                 << QString::fromLocal8Bit("对角线2")
-                 << QString::fromLocal8Bit("缺陷数量")
-                 << QString::fromLocal8Bit("缺陷OK/NG")
-                 << QString::fromLocal8Bit("缺陷1")
-                 << QString::fromLocal8Bit("缺陷2")
-                 << QString::fromLocal8Bit("缺陷3")
-                 << QString::fromLocal8Bit("缺陷4")
-                 << QString::fromLocal8Bit("缺陷5")
-                 << QString::fromLocal8Bit("缺陷6")
-                 << QString::fromLocal8Bit("缺陷7");
+    headerLabels << "ID"
+                 << "时间"
+                 << "OK/NG"
+                 << "尺寸OK/NG"
+                 << "长度"
+                 << "宽度"
+                 << "对角线1"
+                 << "对角线2"
+                 << "缺陷数量"
+                 << "缺陷OK/NG"
+                 << "缺陷1"
+                 << "缺陷2"
+                 << "缺陷3"
+                 << "缺陷4"
+                 << "缺陷5"
+                 << "缺陷6"
+                 << "缺陷7";
     tableWidget->setColumnCount(headerLabels.size());
     tableWidget->setHorizontalHeaderLabels(headerLabels);
 

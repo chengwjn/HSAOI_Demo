@@ -8,6 +8,7 @@
 #include <QJsonObject>
 #include <halconcpp/HalconCpp.h>
 #include <hdevengine/HDevEngineCpp.h>
+
 using namespace HalconCpp;
 
 MainWindow::MainWindow(QWidget* parent)
@@ -36,8 +37,8 @@ MainWindow::MainWindow(QWidget* parent)
     connect(time_1, &QTimer::timeout, this, &MainWindow::slot_CreateNewInfo);
     //       connect(time_1, &QTimer::timeout, m_FlawShowWidget, &FlawShowWidget::slot_resize);
 
-    //    Clock = new MsvLCDNumClockWidget();
-    //    Clock->show();
+    Clock = new MsvLCDNumClockWidget();
+    Clock->show();
 }
 
 MainWindow::~MainWindow()
@@ -47,32 +48,32 @@ MainWindow::~MainWindow()
 
 void MainWindow::initMenu()
 {
-    m_pExit = new QAction(QString::fromLocal8Bit("&退出"), this);
+    m_pExit = new QAction("&退出", this);
     m_pExit->setShortcut(QKeySequence::Quit);
     m_pExit->setToolTip(tr("Exit System."));
     m_pExit->setIcon(QIcon(":/toolbar/icons/exit.png"));
     connect(m_pExit, SIGNAL(triggered()), this, SLOT(slot_CloseSystem()));
     ui->toolBar->addAction(m_pExit);
 
-    m_pSettings = new QAction(QString::fromLocal8Bit("&设置"), this);
+    m_pSettings = new QAction("&设置", this);
     m_pSettings->setToolTip(tr("Device Settings."));
     m_pSettings->setIcon(QIcon(":/toolbar/icons/setup.png"));
     connect(m_pSettings, SIGNAL(triggered()), this, SLOT(slot_ShowSystemSettingForm()));
     ui->toolBar->addAction(m_pSettings);
 
-    m_pStart = new QAction(QString::fromLocal8Bit("&开始"), this);
+    m_pStart = new QAction("&开始", this);
     m_pStart->setToolTip(tr("Start."));
     m_pStart->setIcon(QIcon(":/toolbar/icons/start_icon.png"));
     connect(m_pStart, SIGNAL(triggered()), this, SLOT(slot_ActionStart()));
     ui->toolBar->addAction(m_pStart);
 
-    m_pStop = new QAction(QString::fromLocal8Bit("&停止"), this);
+    m_pStop = new QAction("&停止", this);
     m_pStop->setToolTip(tr("Stop."));
     m_pStop->setIcon(QIcon(":/toolbar/icons/Stop.png"));
     connect(m_pStop, SIGNAL(triggered()), this, SLOT(slot_ActionStop()));
     ui->toolBar->addAction(m_pStop);
 
-    m_pCameraSettings = new QAction(QString::fromLocal8Bit("&相机"), this);
+    m_pCameraSettings = new QAction("&相机", this);
     m_pCameraSettings->setToolTip(tr("CameraSet."));
     m_pCameraSettings->setIcon(QIcon(":/toolbar/icons/cameraIcon.png"));
     connect(m_pCameraSettings, SIGNAL(triggered()), this, SLOT(slot_CameraShow()));
@@ -147,7 +148,7 @@ void MainWindow::Create_GlassStatisticsTable()
 {
     Dock_GlassStatisticsTableView = new QDockWidget(this);
     Dock_GlassStatisticsTableView->setObjectName("GlassStatisticsTable");
-    Dock_GlassStatisticsTableView->setWindowTitle(QString::fromLocal8Bit("数据统计"));
+    Dock_GlassStatisticsTableView->setWindowTitle("数据统计");
     Dock_GlassStatisticsTableView->setAllowedAreas(Qt::AllDockWidgetAreas);
     m_GlassStatisticTable = new GlassStatisticTableWidget(Dock_GlassStatisticsTableView);
     Dock_GlassStatisticsTableView->setWidget(m_GlassStatisticTable);
@@ -159,7 +160,7 @@ void MainWindow::Create_SingleFlawShow()
 {
     Dock_SingleFlawShowView = new QDockWidget(this);
     Dock_SingleFlawShowView->setObjectName("SingleFlaw");
-    Dock_SingleFlawShowView->setWindowTitle(QString::fromLocal8Bit("单个缺陷"));
+    Dock_SingleFlawShowView->setWindowTitle("单个缺陷");
     Dock_SingleFlawShowView->setAllowedAreas(Qt::AllDockWidgetAreas);
     m_SingleFlawShow = new SingleFlawShowWidget(Qt::Horizontal, Qt::Horizontal, Dock_SingleFlawShowView);
     Dock_SingleFlawShowView->setWidget(m_SingleFlawShow);
@@ -170,7 +171,7 @@ void MainWindow::Create_CameraShow()
 {
     Dock_CameraShow = new QDockWidget(this);
     Dock_CameraShow->setObjectName("CameraShow");
-    Dock_CameraShow->setWindowTitle(QString::fromLocal8Bit("相机"));
+    Dock_CameraShow->setWindowTitle("相机");
     Dock_CameraShow->setAllowedAreas(Qt::AllDockWidgetAreas);
     Camera_widget = new CamerasWidget(Dock_CameraShow, Camera0, Camera1, Camera2, Camera3);
     Dock_CameraShow->setWidget(Camera_widget);
@@ -206,7 +207,7 @@ void MainWindow::slot_ShowSystemSettingForm()
     }
     SystemSettings->setWindowFlags(Qt::Window);
     SystemSettings->setWindowIcon(QIcon(":/toolbar/icons/setup.ico"));
-    SystemSettings->setWindowTitle(QString::fromLocal8Bit("系统设置"));
+    SystemSettings->setWindowTitle("系统设置");
     SystemSettings->show();
 }
 
@@ -245,13 +246,13 @@ void MainWindow::slot_SaveCamera(QString CameraNum, QString CameraName)
 
 void MainWindow::slot_ChangeRecipe(QString RecipeName)
 {
-    QString recipelog = QString::fromLocal8Bit("获得新工单名: ") + RecipeName;
+    QString recipelog = "获得新工单名: " + RecipeName;
     log_singleton::Write_Log(recipelog, Log_Level::General);
     //    delete JsonRecipeParam;
     //    JsonRecipeParam = new JsonRecipeParse(this, RecipeName);
     //    JsonRecipeParam->ChangeParams(RecipeName);
     JsonParam->ChangeParams(RecipeName);
-    log_singleton::Write_Log(QString::fromLocal8Bit("新工单已被选择"), Log_Level::General);
+    log_singleton::Write_Log("新工单已被选择", Log_Level::General);
     Global::CurrentRecipe = RecipeName;
     Global::SaveXml();
     //    emit sig_DeliverNewRecipe(JsonParam);

@@ -9,8 +9,8 @@ void Global::InitGlobalParam()
     XmlParam.getParameter("CurrentRecipe", CurrentRecipe);
     XmlParam.getParameter("SystemName", SystemName);
 
-    QString CurrentRecipeNameLog = QString::fromLocal8Bit("获得当前工单: ") + CurrentRecipe;
-    QString SystemNameLog = QString::fromLocal8Bit("获得当前项目名: ") + SystemName;
+    QString CurrentRecipeNameLog = "获得当前工单: " + CurrentRecipe;
+    QString SystemNameLog = "获得当前项目名: " + SystemName;
     log_singleton::Write_Log(CurrentRecipeNameLog, Log_Level::General);
     log_singleton::Write_Log(SystemNameLog, Log_Level::General);
 
@@ -23,7 +23,7 @@ void Global::SaveXml()
     XmlParam.setParameter("CurrentRecipe", CurrentRecipe);
     XmlParam.SaveParasToFile();
 
-    QString SaveXmlLog = QString::fromLocal8Bit("工单参数已设置完成 ");
+    QString SaveXmlLog = "工单参数已设置完成 ";
     log_singleton::Write_Log(SaveXmlLog, Log_Level::Urgent);
 }
 

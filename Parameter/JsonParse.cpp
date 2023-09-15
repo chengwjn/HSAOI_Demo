@@ -5,8 +5,7 @@
 JsonParse::JsonParse(QString FileName)
 {
     m_filepath = "Recipes/" + FileName + ".json";
-    InitParams();
-    SaveParasToFile();
+    ReadParamsFromFile();
 }
 
 void createNestedJsonObject(QJsonObject& parentObject, const QList<QString>& keys, int depth, QString finalValue)
@@ -16,52 +15,21 @@ void createNestedJsonObject(QJsonObject& parentObject, const QList<QString>& key
     }
 
     QString currentKey = keys.at(depth);
-
-    // 如果是最后一层，设置值为 finalValue
     if (depth == keys.size() - 1) {
         parentObject[currentKey] = finalValue;
     } else {
-        // 递归创建下一层
-        QJsonObject currentObject;
+        if (!parentObject.contains(currentKey)) {
+            parentObject[currentKey] = QJsonObject();
+        }
+
+        QJsonObject currentObject = parentObject[currentKey].toObject();
         createNestedJsonObject(currentObject, keys, depth + 1, finalValue);
 
-        // 如果当前键已存在，合并到数组中
-        if (parentObject.contains(currentKey) && parentObject[currentKey].isObject()) {
-            QJsonObject existingObject = parentObject[currentKey].toObject();
-            // 合并 currentObject 到 existingObject
-            for (const auto& key : currentObject.keys()) {
-                existingObject[key] = currentObject[key];
-            }
-            parentObject[currentKey] = existingObject;
-        } else {
-            parentObject[currentKey] = currentObject;
-        }
+        parentObject[currentKey] = currentObject;
     }
 }
 
-void generateJson(QJsonObject& jsonObject, const QList<QString>& keys, const QString& value)
-{
-    if (keys.isEmpty()) {
-        // 当键列表为空时，将最终值设置为 JSON 属性的值
-        jsonObject["value"] = value;
-    } else {
-        // 取出第一个键
-        QString key = keys.first();
-        // 剩余的键列表
-        QList<QString> remainingKeys = keys;
-        remainingKeys.removeFirst();
-
-        // 创建一个嵌套的 JSON 对象
-        QJsonObject childObject;
-        generateJson(childObject, remainingKeys, value);
-
-        // 将嵌套的 JSON 对象设置为当前 JSON 属性的值
-        jsonObject[key] = childObject;
-        jsonObject.insert(keys.at(0), childObject);
-    }
-}
-
-int JsonParse::SaveParasToFile()
+int JsonParse::SaveParamsToFile()
 {
 
     QJsonObject jsonObject;
@@ -79,10 +47,8 @@ int JsonParse::SaveParasToFile()
                 Origin = Origin.mid(DotIndex + 1);
             }
         }
-        Parents.append(Origin); //到此为止包含了此元素的所有Parent
-
-        //        createNestedJsonObject(jsonObject, Parents, 0, i.value().value);
-        generateJson(jsonObject, Parents, i.value().value);
+        Parents.append(Origin);
+        createNestedJsonObject(jsonObject, Parents, 0, i.value().value);
     }
 
     QJsonDocument jsonDoc(jsonObject);
@@ -101,9 +67,9 @@ int JsonParse::SaveParasToFile()
     return 0;
 }
 
-int JsonParse::InitParams()
+int JsonParse::ReadParamsFromFile()
 {
-    int ret = parse_app_json_file(m_filepath);
+    int ret = ParseJsonFile(m_filepath);
     return ret;
 }
 
@@ -111,7 +77,7 @@ int JsonParse::ChangeParams(QString FileName)
 {
     m_filepath = "Recipes/" + FileName + ".json";
     HASHTABLE.clear();
-    if (InitParams())
+    if (ReadParamsFromFile())
         return 0;
     else
         return -1;
@@ -169,7 +135,7 @@ bool JsonParse::getParameter(QString name, QString& value)
     return b_ret;
 }
 
-int JsonParse::parse_app_json_file(QString FileName)
+int JsonParse::ParseJsonFile(QString FileName)
 {
     QFile file(FileName);
     file.open(QIODevice::ReadOnly);
@@ -184,7 +150,7 @@ int JsonParse::parse_app_json_file(QString FileName)
         log_singleton::Write_Log("JsonFile Read Error!", Log_Level::Error);
         return -1;
     }
-    parseJsonObject(jsonDocument.object());
+    ParseJsonObject(jsonDocument.object());
 
     //    for (auto it = HASHTABLE.constBegin(); it != HASHTABLE.constEnd(); ++it) {
     //        qDebug() << it.key() << ":" << it.value().value;
@@ -193,7 +159,7 @@ int JsonParse::parse_app_json_file(QString FileName)
 }
 
 QString CurrentKey;
-void JsonParse::parseJsonObject(const QJsonObject& jsonObj)
+void JsonParse::ParseJsonObject(const QJsonObject& jsonObj)
 {
     for (auto it = jsonObj.constBegin(); it != jsonObj.constEnd(); ++it) {
         CurrentKey += it.key();
@@ -201,7 +167,7 @@ void JsonParse::parseJsonObject(const QJsonObject& jsonObj)
 
         if (currentValue.isObject()) {
             CurrentKey += ".";
-            parseJsonObject(currentValue.toObject());
+            ParseJsonObject(currentValue.toObject());
             CurrentKey.chop(it.key().length() + 1);
         } else {
             _VALUE_ELEMENT4JSON element;
@@ -211,32 +177,14 @@ void JsonParse::parseJsonObject(const QJsonObject& jsonObj)
                 element.value = QString::number(LastValue);
                 element.valType = J4_FLOAT64;
             } else if (currentValue.isString()) {
+
                 QString LastValue = currentValue.toString();
+                qDebug() << LastValue;
                 element.value = LastValue;
                 element.valType = J4_QSTRING;
             }
-            HASHTABLE.insert(CurrentKey, element);
+            HASHTABLE.insert(CurrentKey, element); //至此为止参数全部写入Hash表
             CurrentKey.chop(it.key().length());
         }
-    }
-}
-
-void JsonParse::parseNestedJsonObject(const QJsonObject& jsonObj, const QString& parentKey)
-{
-    for (auto it = jsonObj.constBegin(); it != jsonObj.constEnd(); ++it) {
-        QString currentKey = parentKey + "." + it.key();
-        QJsonValue currentValue = it.value();
-        _VALUE_ELEMENT4JSON element;
-        element.name = it.key();
-        if (currentValue.isDouble()) {
-            double LastValue = currentValue.toDouble();
-            element.value = QString::number(LastValue);
-            element.valType = J4_FLOAT64;
-        } else if (currentValue.isString()) {
-            QString LastValue = currentValue.toString();
-            element.value = LastValue;
-            element.valType = J4_QSTRING;
-        }
-        HASHTABLE.insert(currentKey, element);
     }
 }

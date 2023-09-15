@@ -71,6 +71,11 @@
         <height>31</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(0, 255, 0);</string>
       </property>

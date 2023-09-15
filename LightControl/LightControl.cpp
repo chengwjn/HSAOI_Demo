@@ -26,9 +26,9 @@ LightControl::LightControl(RegParasComm& sig_comm, QWidget* parent)
     Layout1->addWidget(ui->Save);
     Layout1->setAlignment(Qt::AlignTop);
 
-    ui->Get->setText(QString::fromLocal8Bit("获取参数"));
-    ui->Set->setText(QString::fromLocal8Bit("设置参数"));
-    ui->Save->setText(QString::fromLocal8Bit("保存"));
+    ui->Get->setText("获取参数");
+    ui->Set->setText("设置参数");
+    ui->Save->setText("保存");
 
     specificItem0 = ui->treeWidget->topLevelItem(0);
     childItem0 = specificItem0->child(0);

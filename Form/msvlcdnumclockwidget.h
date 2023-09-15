@@ -1,24 +1,23 @@
-#ifndef MSVLCDNUMCLOCKWIDGET_H
+﻿#ifndef MSVLCDNUMCLOCKWIDGET_H
 #define MSVLCDNUMCLOCKWIDGET_H
 
-#include <QWidget>
 #include <QTimer>
+#include <QWidget>
 namespace Ui {
 class MsvLCDNumClockWidget;
 }
 
-class MsvLCDNumClockWidget : public QWidget
-{
+class MsvLCDNumClockWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit MsvLCDNumClockWidget(QWidget *parent = 0);
+    explicit MsvLCDNumClockWidget(QWidget* parent = 0);
     ~MsvLCDNumClockWidget();
 
 private:
-    Ui::MsvLCDNumClockWidget *ui;
+    Ui::MsvLCDNumClockWidget* ui;
 
-    QTimer * time_update_show_timer;
+    QTimer* time_update_show_timer;
 private slots:
     void updateTimeShow();
 };

@@ -33,19 +33,19 @@ DushenCameraWidget::DushenCameraWidget(QWidget* parent, QString CameraName, int 
     ui->comboBox_MultiFieldSelect->setEnabled(false);
     ui->pushButton_MultiFieldSelect->setEnabled(false);
 
-    ui->tabWidget->setTabText(0, QString::fromLocal8Bit("显示"));
-    ui->tabWidget->setTabText(1, QString::fromLocal8Bit("设置"));
-    ui->cbx_SoftTrigger->setText(QString::fromLocal8Bit("触发使能"));
-    ui->pushButton_trigger->setText(QString::fromLocal8Bit("触发"));
-    ui->pushButton_Scan->setText(QString::fromLocal8Bit("扫描"));
-    ui->pushButton_Property->setText(QString::fromLocal8Bit("属性"));
-    ui->pushButton_Open->setText(QString::fromLocal8Bit("打开"));
-    ui->pushButton_Start->setText(QString::fromLocal8Bit("准备采集"));
-    ui->pushButton_Save->setText(QString::fromLocal8Bit("保存"));
-    ui->pushButton_Loadini->setText(QString::fromLocal8Bit("加载配置"));
-    ui->pushButton_Saveini->setText(QString::fromLocal8Bit("保存配置"));
-    ui->pushButton_MultiFieldSelect->setText(QString::fromLocal8Bit("选择"));
-    ui->lbl_multifield->setText(QString::fromLocal8Bit("多场选择"));
+    ui->tabWidget->setTabText(0, "显示");
+    ui->tabWidget->setTabText(1, "设置");
+    ui->cbx_SoftTrigger->setText("触发使能");
+    ui->pushButton_trigger->setText("触发");
+    ui->pushButton_Scan->setText("扫描");
+    ui->pushButton_Property->setText("属性");
+    ui->pushButton_Open->setText("打开");
+    ui->pushButton_Start->setText("准备采集");
+    ui->pushButton_Save->setText("保存");
+    ui->pushButton_Loadini->setText("加载配置");
+    ui->pushButton_Saveini->setText("保存配置");
+    ui->pushButton_MultiFieldSelect->setText("选择");
+    ui->lbl_multifield->setText("多场选择");
 
     for (int i = 0; i < 6; i++) {
         QString Text = QString::number(i + 1);
@@ -110,7 +110,7 @@ void DushenCameraWidget::on_pushButton_Open_clicked()
             connect(CameraBase, SIGNAL(sig_DeliverImage(QImage)), this, SLOT(slot_ShowImage(QImage)));
             connect(CameraBase, SIGNAL(sig_DeliverFrameRate(QString)), this, SLOT(slot_ShowFrameRate(QString)));
 
-            ui->pushButton_Open->setText(QString::fromLocal8Bit("关闭"));
+            ui->pushButton_Open->setText("关闭");
             ui->lbl_CameraName->setText(ui->comboBox_Devices->currentText());
             ui->pushButton_Start->setEnabled(true);
             ui->pushButton_Property->setEnabled(true);
@@ -128,7 +128,7 @@ void DushenCameraWidget::on_pushButton_Open_clicked()
         scene->removeItem(loadedPixmapItem);
         delete loadedPixmapItem;
 
-        ui->pushButton_Open->setText(QString::fromLocal8Bit("打开"));
+        ui->pushButton_Open->setText("打开");
         ui->pushButton_Start->setEnabled(false);
         ui->pushButton_Property->setEnabled(false);
         ui->pushButton_Saveini->setEnabled(false);
@@ -145,20 +145,20 @@ void DushenCameraWidget::on_pushButton_Start_clicked()
 
     if (!CameraBase->IsStarted) {
         CameraBase->slot_StartFunc();
-        ui->pushButton_Start->setText(QString::fromLocal8Bit("停止"));
+        ui->pushButton_Start->setText("停止");
         ui->pushButton_Open->setEnabled(false);
         ui->cbx_SoftTrigger->setEnabled(false);
         if (ui->cbx_SoftTrigger->isChecked()) {
             ui->pushButton_trigger->setEnabled(true);
-            ui->pushButton_trigger->setText(QString::fromLocal8Bit("单次触发"));
+            ui->pushButton_trigger->setText("单次触发");
         } else {
-            ui->pushButton_trigger->setText(QString::fromLocal8Bit("连续触发"));
+            ui->pushButton_trigger->setText("连续触发");
         }
         ui->comboBox_MultiFieldSelect->setEnabled(false);
         ui->pushButton_MultiFieldSelect->setEnabled(false);
     } else {
         CameraBase->slot_StopFunc();
-        ui->pushButton_Start->setText(QString::fromLocal8Bit("开始"));
+        ui->pushButton_Start->setText("开始");
         ui->pushButton_Open->setEnabled(true);
         ui->cbx_SoftTrigger->setEnabled(true);
         ui->pushButton_trigger->setEnabled(false);
@@ -251,7 +251,7 @@ void DushenCameraWidget::AutoOpen()
             connect(CameraBase, SIGNAL(sig_DeliverFrameRate(QString)), this, SLOT(slot_ShowFrameRate(QString)));
             scene->addItem(loadedPixmapItem);
 
-            ui->pushButton_Open->setText(QString::fromLocal8Bit("关闭"));
+            ui->pushButton_Open->setText("关闭");
             ui->lbl_CameraName->setText(RealCameraName);
             ui->pushButton_Start->setEnabled(true);
             ui->pushButton_Property->setEnabled(true);
@@ -301,9 +301,9 @@ void DushenCameraWidget::slot_StartCamera()
         if (!CameraBase->IsStarted)
             on_pushButton_Start_clicked();
         else
-            log_singleton::Write_Log(QString::fromLocal8Bit("相机未启动"), Log_Level::Error);
+            log_singleton::Write_Log("相机未启动", Log_Level::Error);
     } else
-        log_singleton::Write_Log(QString::fromLocal8Bit("相机未打开"), Log_Level::Error);
+        log_singleton::Write_Log("相机未打开", Log_Level::Error);
 }
 
 void DushenCameraWidget::slot_CameraStop()

@@ -197,7 +197,7 @@ void DushenBasicFunc::slot_ScanFunc()
 
     if (!Global::IsScanned) {
         status = dvpRefresh(&Global::CameraCounts);
-        QString cameramountLog = QString::fromLocal8Bit("当前相机数量为 ") + QString::number(Global::CameraCounts);
+        QString cameramountLog = "当前相机数量为 " + QString::number(Global::CameraCounts);
         log_singleton::Write_Log(cameramountLog, Log_Level::General);
 
         if (Global::CameraCounts < 1) {

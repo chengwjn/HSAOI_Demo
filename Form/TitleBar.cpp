@@ -14,7 +14,7 @@ TitleBar::TitleBar(QWidget* parent)
     m_pTitleLabel = new QLabel(this);
     m_pTitleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     m_pTitleLabel->setText(Global::SystemName);
-    m_pTitleLabel->setStyleSheet("font: 75 24pt \"宋体\"; color: rgb(0, 0, 200);");
+    m_pTitleLabel->setStyleSheet("font: 75 24pt \"微软雅黑\"; color: rgb(0, 0, 200);");
 
     QHBoxLayout* layout1 = new QHBoxLayout(this);
     layout1->addWidget(m_pTitleLabel);

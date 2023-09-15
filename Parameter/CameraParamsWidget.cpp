@@ -25,11 +25,11 @@ void CameraParamsWidget::InitWidgetLayout()
     layout0->addLayout(layout1);
 
     btn_Read = new QPushButton(this);
-    btn_Read->setText(QString::fromLocal8Bit("读取"));
+    btn_Read->setText("读取");
     connect(btn_Read, SIGNAL(clicked()), this, SLOT(ReadValue2Tree()));
 
     btn_Save = new QPushButton(this);
-    btn_Save->setText(QString::fromLocal8Bit("保存"));
+    btn_Save->setText("保存");
     connect(btn_Save, SIGNAL(clicked()), this, SLOT(slot_SaveValue2Recipe()));
 
     layout1->addWidget(btn_Read);
@@ -40,21 +40,21 @@ void CameraParamsWidget::InitWidgetLayout()
 void CameraParamsWidget::InitTreeWidget()
 {
     QStringList HStrList;
-    HStrList.push_back(QString::fromLocal8Bit("参数"));
-    HStrList.push_back(QString::fromLocal8Bit("数值"));
+    HStrList.push_back("参数");
+    HStrList.push_back("数值");
     int HlableCnt = HStrList.count();
 
     TreeWidget->setColumnCount(HlableCnt);
     TreeWidget->setHeaderLabels(HStrList);
     TreeWidget->setColumnWidth(0, 200);
     rootItem0 = new QTreeWidgetItem(TreeWidget);
-    rootItem0->setText(0, QString::fromLocal8Bit("相机0"));
+    rootItem0->setText(0, "相机0");
     rootItem1 = new QTreeWidgetItem(TreeWidget);
-    rootItem1->setText(0, QString::fromLocal8Bit("相机1"));
+    rootItem1->setText(0, "相机1");
     rootItem2 = new QTreeWidgetItem(TreeWidget);
-    rootItem2->setText(0, QString::fromLocal8Bit("相机2"));
+    rootItem2->setText(0, "相机2");
     rootItem3 = new QTreeWidgetItem(TreeWidget);
-    rootItem3->setText(0, QString::fromLocal8Bit("相机3"));
+    rootItem3->setText(0, "相机3");
 
     TreeWidget->setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::SelectedClicked);
     ReadValue2Tree();

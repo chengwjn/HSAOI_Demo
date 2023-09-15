@@ -12,6 +12,7 @@
 #include "Parameter/JsonRecipeWidget.h"
 //#include "Parameter/RecipeParse.h"
 //#include "Parameter/RecipeWidget.h"
+#include "Form/msvlcdnumclockwidget.h"
 #include "SystemSettingForm.h"
 #include "log_singleton.h"
 #include <QDockWidget>
@@ -68,6 +69,7 @@ private:
     GlassStatisticTableWidget* m_GlassStatisticTable;
     SingleFlawShowWidget* m_SingleFlawShow;
     CamerasWidget* Camera_widget;
+    MsvLCDNumClockWidget* Clock;
 
     QDockWidget* Dock_FlawShowView;
     QDockWidget* Dock_GlassStatisticsTableView;

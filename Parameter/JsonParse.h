@@ -42,8 +42,8 @@ class JsonParse {
 public:
     JsonParse(QString FileName);
 
-    int SaveParasToFile(); //只有修改了值的变量保存
-    int InitParams(); //初始化参数
+    int SaveParamsToFile(); //只有修改了值的变量保存
+    int ReadParamsFromFile(); //初始化参数
     int ChangeParams(QString FileName);
 
     //name读写时格式为"parent.name"
@@ -62,9 +62,8 @@ private:
     QString m_filepath;
 
     //以下均为处理json文件最后存入Hash表中
-    int parse_app_json_file(QString FileName);
-    void parseJsonObject(const QJsonObject& jsonObj);
-    void parseNestedJsonObject(const QJsonObject& jsonObj, const QString& parentKey);
+    int ParseJsonFile(QString FileName);
+    void ParseJsonObject(const QJsonObject& jsonObj);
 };
 
 #endif // JSONPARSE_H

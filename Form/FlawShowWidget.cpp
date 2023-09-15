@@ -153,8 +153,8 @@ void FlawShowWidget::slot_GetFlawPoints(QList<FlawPoint>* n_FlawPointList)
 
 void FlawShowWidget::slot_ChangeFlawShow()
 {
-    QString Keyword4Length = QString::fromLocal8Bit("尺寸测量") + "." + QString::fromLocal8Bit("长度");
-    QString Keyword4Width = QString::fromLocal8Bit("尺寸测量") + "." + QString::fromLocal8Bit("长度");
+    QString Keyword4Length = "尺寸测量.长度";
+    QString Keyword4Width = "尺寸测量.宽度";
     double length;
     RECIPE->getParameter(Keyword4Length, length);
     double width;

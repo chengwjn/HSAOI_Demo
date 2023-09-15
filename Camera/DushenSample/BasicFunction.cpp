@@ -491,7 +491,7 @@ void QBasicFunction::slotDispRate()
 
         strFrameCount = QString::number(FrameCount.uFrameCount);
         strFrameRate = QString::number(FrameCount.fFrameRate);
-        strFrameInfo = QString::fromLocal8Bit("采集帧数 ") + strFrameCount + QString::fromLocal8Bit(" 采集帧率 ") + strFrameRate + QString::fromLocal8Bit(" fps 显示帧率 ") + QString::number(m_DisplayCount - m_DisplayCountBackUp) + QString::fromLocal8Bit(" fps");
+        strFrameInfo = "采集帧数 " + strFrameCount + " 采集帧率 " + strFrameRate + " fps 显示帧率 " + QString::number(m_DisplayCount - m_DisplayCountBackUp) + " fps";
         m_DisplayCountBackUp = m_DisplayCount;
         //QWidget::setWindowTitle(strFrameInfo);
         ui->label_fps->setText(strFrameInfo);
