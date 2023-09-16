@@ -8,11 +8,11 @@
 #include "Form/singleflawshowwidget.h"
 #include "Global.h"
 #include "LightControl/LightControl.h"
-#include "Parameter/JsonParse.h"
+//#include "Parameter/JsonParse.h"
+#include "Parameter/JsonParse2Map.h"
 #include "Parameter/JsonRecipeWidget.h"
 //#include "Parameter/RecipeParse.h"
 //#include "Parameter/RecipeWidget.h"
-#include "Form/msvlcdnumclockwidget.h"
 #include "SystemSettingForm.h"
 #include "log_singleton.h"
 #include <QDockWidget>
@@ -33,8 +33,7 @@ public:
     ~MainWindow();
 
     //工单
-    //    JsonRecipeParse* JsonRecipeParam;
-    JsonParse* JsonParam;
+    JsonParse2Map* Recipe;
 
     //相机
     DushenBasicFunc* Camera0;
@@ -69,7 +68,6 @@ private:
     GlassStatisticTableWidget* m_GlassStatisticTable;
     SingleFlawShowWidget* m_SingleFlawShow;
     CamerasWidget* Camera_widget;
-    MsvLCDNumClockWidget* Clock;
 
     QDockWidget* Dock_FlawShowView;
     QDockWidget* Dock_GlassStatisticsTableView;
@@ -97,9 +95,8 @@ public slots:
     void slot_ChangeRecipe(QString RecipeName);
 
     void slot_CreateNewInfo();
-    void slot_FromSystemSettings_FlawWidgetNeedReplot();
 signals:
-    //    void sig_DeliverNewRecipe(JsonRecipeParse* Recipe);
+    void sig_DeliverNewRecipe(JsonParse2Map* NewRecipe);
     void sig_FlawWidgetChange();
 
     void sig_DeliverGlassInfo2Table(GLASSINFO* info);

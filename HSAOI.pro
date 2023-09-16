@@ -47,7 +47,7 @@ SOURCES += \
     NavigationBar/CNavModel.cpp \
     NavigationBar/CNavView.cpp \
     Parameter/CameraParamsWidget.cpp \
-    Parameter/JsonParse.cpp \
+    Parameter/JsonParse2Map.cpp \
     Parameter/JsonRecipeWidget.cpp \
     Parameter/XmlParse.cpp \
     SystemSettingForm.cpp \
@@ -83,7 +83,7 @@ HEADERS += \
     NavigationBar/CNavModel.h \
     NavigationBar/CNavView.h \
     Parameter/CameraParamsWidget.h \
-    Parameter/JsonParse.h \
+    Parameter/JsonParse2Map.h \
     Parameter/JsonRecipeWidget.h \
     Parameter/XmlParse.h \
     SystemSettingForm.h \

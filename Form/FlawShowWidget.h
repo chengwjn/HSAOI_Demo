@@ -10,7 +10,9 @@
 
 #include "FlawDefine.h"
 #include "Global.h"
-#include "Parameter/JsonParse.h"
+//#include "Parameter/JsonParse.h"
+#include "Form/msvlcdnumclockwidget.h"
+#include "Parameter/JsonParse2Map.h"
 #include <QElapsedTimer>
 #include <QImage>
 #include <QLabel>
@@ -33,12 +35,11 @@
 #include <Qwt/qwt_scale_widget.h>
 #include <Qwt/qwt_symbol.h>
 #include <Qwt/qwt_text.h>
-#include <Parameter/JsonParse.h>
 
 class FlawShowWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit FlawShowWidget(QWidget* parent = nullptr, JsonParse* recipe = nullptr);
+    explicit FlawShowWidget(QWidget* parent = nullptr, JsonParse2Map* recipe = nullptr);
 
     enum FlawMoveWay {
         LeftToRightUp = 0,
@@ -54,7 +55,9 @@ private:
 
     bool isGetGlassSize = false;
     bool isGetFlawPoints = false;
-    JsonParse* RECIPE;
+    JsonParse2Map* RECIPE;
+
+    MsvLCDNumClockWidget* clock;
 
 public:
     void drawGlass(double x_length, double y_length); //绘制玻璃

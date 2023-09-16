@@ -3,7 +3,7 @@
 #include "NavigationBar/CNavModel.h"
 #include "ui_SystemSettingForm.h"
 
-SystemSettingForm::SystemSettingForm(RegParasComm& sig_comm, JsonParse& JsonRecipe, QWidget* parent)
+SystemSettingForm::SystemSettingForm(RegParasComm& sig_comm, JsonParse2Map& JsonRecipe, QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::SystemSettingForm)
     , m_pSig_comm(sig_comm)
@@ -48,17 +48,15 @@ void SystemSettingForm::InitForm()
     this_JsonRecipeWidget = new JsonRecipeWidget(this, &JSONRECIPE);
     stack_widget->addWidget(this_JsonRecipeWidget);
 
-    //    this_CameraParamsWidget = new CameraParamsWidget(this, &JSONRECIPE);
-    //    stack_widget->addWidget(this_CameraParamsWidget);
+    this_CameraParamsWidget = new CameraParamsWidget(this, &JSONRECIPE);
+    stack_widget->addWidget(this_CameraParamsWidget);
 
     LightControlWidget = new LightControl(m_pSig_comm, this);
     stack_widget->addWidget(LightControlWidget);
 
-    //    connect(this_JsonRecipeWidget, SIGNAL(sig_DeliverName(QString)), this, SLOT(slot_JsonRecipeName_Changed(QString)));
-    //    connect(this, SIGNAL(sig_Deliver_NewRecipe(JsonRecipeParse*)), this_JsonRecipeWidget, SLOT(slot_RecipeChanged(JsonRecipeParse*)));
-
-    //    connect(this_JsonRecipeWidget, SIGNAL(sig_CameraParamsChangeRecipe()), this_CameraParamsWidget, SLOT(slot_ChangeRecipe()));
-    //    connect(this_JsonRecipeWidget, SIGNAL(sig_FlawWidgetShouldReplot()), this, SLOT(slot_Deliver_FromJsonRecipe_FlawWidgetNeedReplot()));
+    connect(this_JsonRecipeWidget, SIGNAL(sig_DeliverName(QString)), this, SLOT(slot_JsonRecipeName_Changed(QString)));
+    connect(this, SIGNAL(sig_Deliver_NewRecipe(JsonParse2Map*)), this_JsonRecipeWidget, SLOT(slot_RecipeChanged(JsonParse2Map*)));
+    connect(this_JsonRecipeWidget, SIGNAL(sig_CameraParamsChangeRecipe()), this_CameraParamsWidget, SLOT(slot_ChangeRecipe()));
 }
 
 void SystemSettingForm::slot_ListView_Pressed()
@@ -84,17 +82,12 @@ void SystemSettingForm::slot_ListView_Pressed()
     }
 }
 
-//void SystemSettingForm::slot_JsonRecipe_Changed(JsonRecipeParse* NewRecipe)
-//{
-//    emit sig_Deliver_NewRecipe(NewRecipe);
-//}
+void SystemSettingForm::slot_JsonRecipe_Changed(JsonParse2Map* NewRecipe)
+{
+    emit sig_Deliver_NewRecipe(NewRecipe);
+}
 
 void SystemSettingForm::slot_JsonRecipeName_Changed(QString NewRecipeName)
 {
     emit sig_Deliver_NewRecipeName2mainWindow(NewRecipeName);
-}
-
-void SystemSettingForm::slot_Deliver_FromJsonRecipe_FlawWidgetNeedReplot()
-{
-    emit sig_Deliver_FromJsonRecipe_FlawWidgetNeedReplot();
 }

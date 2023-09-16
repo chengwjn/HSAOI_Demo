@@ -11,6 +11,7 @@
 #include "Camera/DushenSample/ImageAcquisition.h"
 #include "Global.h"
 //#include "Parameter/JsonRecipeParse.h"
+#include "Parameter/JsonParse2Map.h"
 #include <QDir>
 #include <QFileInfo>
 #include <QGraphicsPixmapItem>
@@ -24,9 +25,10 @@
 class DushenBasicFunc : public QObject {
     Q_OBJECT
 public:
-    explicit DushenBasicFunc(QObject* parent = nullptr, int CameraNum = 999);
+    explicit DushenBasicFunc(QObject* parent = nullptr, int CameraNum = 999, JsonParse2Map* recipe = nullptr);
 
-//    JsonRecipeParse* CameraParamFromRecipe;
+    //    JsonRecipeParse* CameraParamFromRecipe;
+    JsonParse2Map* m_recipe;
 
     QImageAcquisition* m_AcquireImage; //图像采集线程对象的指针
 

@@ -9,6 +9,7 @@
 #define CAMERAPARAMSWIDGET_H
 
 //#include "Parameter/JsonRecipeParse.h"
+#include "Parameter/JsonParse2Map.h"
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QTreeWidget>
@@ -20,10 +21,12 @@ class CameraParamsWidget : public QWidget {
     Q_OBJECT
 public:
     //    explicit CameraParamsWidget(QWidget* parent = nullptr, JsonRecipeParse* RecipeParse = nullptr);
-    explicit CameraParamsWidget(QWidget* parent = nullptr);
+    explicit CameraParamsWidget(QWidget* parent = nullptr, JsonParse2Map* RecipeParse = nullptr);
     //    JsonRecipeParse* CurrentRecipe;
 
 private:
+    JsonParse2Map* Recipe;
+
     QPushButton* btn_Save;
     QPushButton* btn_Read;
 
@@ -33,6 +36,13 @@ private:
     QTreeWidgetItem* rootItem1;
     QTreeWidgetItem* rootItem2;
     QTreeWidgetItem* rootItem3;
+
+    QList<Key2Value> Params4Camera0;
+    QList<Key2Value> Params4Camera1;
+    QList<Key2Value> Params4Camera2;
+    QList<Key2Value> Params4Camera3;
+
+    void ReadParamsFromRecipe();
 
     void InitWidgetLayout();
     void InitTreeWidget();

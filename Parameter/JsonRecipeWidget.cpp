@@ -4,7 +4,7 @@
 #include "math.h"
 #include "ui_JsonRecipeWidget.h"
 
-JsonRecipeWidget::JsonRecipeWidget(QWidget* parent, JsonParse* RecipeParse)
+JsonRecipeWidget::JsonRecipeWidget(QWidget* parent, JsonParse2Map* RecipeParse)
     : QWidget(parent)
     , ui(new Ui::JsonRecipeWidget)
 {
@@ -16,6 +16,7 @@ JsonRecipeWidget::JsonRecipeWidget(QWidget* parent, JsonParse* RecipeParse)
     InitRecipesInFiles();
     InitTreeWidget();
     connect(TreeWidget, &QTreeWidget::itemDoubleClicked, this, &JsonRecipeWidget::slot_ItemDoubleClicked);
+    connect(TreeWidget, &QTreeWidget::itemClicked, this, &JsonRecipeWidget::slot_ItemSelected);
 }
 
 JsonRecipeWidget::~JsonRecipeWidget()
@@ -39,6 +40,9 @@ void JsonRecipeWidget::InitTreeWidget()
     rootItem4FlawDetect->setText(0, "缺陷检测");
     rootItem2 = new QTreeWidgetItem(TreeWidget);
     rootItem2->setText(0, "None");
+
+    //    rootItem4GlassMeasure->setFlags(rootItem4GlassMeasure->flags() & ~(Qt::ItemIsEditable));
+    //    rootItem4FlawDetect->setFlags(rootItem4FlawDetect->flags() & ~(Qt::ItemIsEditable));
 
     TreeWidget->setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::SelectedClicked);
     ReadValue2Tree();
@@ -64,60 +68,6 @@ void JsonRecipeWidget::InitRecipesInFiles()
     }
     int SelectIndex = cbx_RecipeSelect->findText(Global::CurrentRecipe);
     cbx_RecipeSelect->setCurrentIndex(SelectIndex);
-}
-
-QString JsonRecipeWidget::SetItemName(int ParamName)
-{
-    switch (ParamName) {
-    case 0:
-        return "长度(mm)";
-        break;
-    case 1:
-        return "长度_误差(mm)";
-        break;
-    case 2:
-        return "宽度(mm)";
-        break;
-    case 3:
-        return "宽度_误差(mm)";
-        break;
-    case 4:
-        return "对角线1(mm)";
-        break;
-    case 5:
-        return "对角线1_误差(mm)";
-        break;
-    case 6:
-        return "对角线2(mm)";
-        break;
-    case 7:
-        return "对角线2_误差(mm)";
-        break;
-    case 8:
-        return "Length";
-        break;
-    case 9:
-        return "LengthError";
-        break;
-    case 10:
-        return "Width";
-        break;
-    case 11:
-        return "WidthError";
-        break;
-    case 12:
-        return "Diagonal1";
-        break;
-    case 13:
-        return "Diagonal1Error";
-        break;
-    case 14:
-        return "Diagonal2";
-        break;
-    case 15:
-        return "Diagonal2Error";
-        break;
-    }
 }
 
 void JsonRecipeWidget::InitWidgetLayout()
@@ -150,17 +100,33 @@ void JsonRecipeWidget::InitWidgetLayout()
     btn_Save->setText("保存");
     connect(btn_Save, SIGNAL(clicked()), this, SLOT(SaveValue2tree()));
 
+    btn_NewParam = new QPushButton(this);
+    btn_NewParam->setText("新建参数");
+    connect(btn_NewParam, SIGNAL(clicked()), this, SLOT(GetNewParam()));
+
+    btn_DeleteSingleParam = new QPushButton(this);
+    btn_DeleteSingleParam->setText("删除元素");
+    connect(btn_DeleteSingleParam, SIGNAL(clicked()), this, SLOT(DeleteSingleParam()));
+
     ui->Layout_btns->setContentsMargins(10, 10, 10, 10);
     ui->Layout_btns->addWidget(btn_SelectRecipe);
     ui->Layout_btns->addWidget(btn_NewRecipe);
     ui->Layout_btns->addWidget(btn_DeleteRecipe);
     ui->Layout_btns->addWidget(btn_Read);
     ui->Layout_btns->addWidget(btn_Save);
+    ui->Layout_btns->addWidget(btn_NewParam);
+    ui->Layout_btns->addWidget(btn_DeleteSingleParam);
     ui->Layout_btns->setAlignment(Qt::AlignTop);
 
     lbl_OperationResult = new QLabel(this);
     ui->Layout_bottom->setContentsMargins(10, 0, 10, 0);
     ui->Layout_bottom->addWidget(lbl_OperationResult);
+}
+
+void JsonRecipeWidget::ReadParamsFromRecipe()
+{
+    CurrentRecipe->GetValueFromRecipe("尺寸测量", Params4GlassMeasure);
+    CurrentRecipe->GetValueFromRecipe("缺陷检测", Params4FlawDetect);
 }
 
 void JsonRecipeWidget::SelectRecipe()
@@ -205,8 +171,6 @@ void JsonRecipeWidget::CreateNewRecipe()
     QString DestFilePath = "Recipes/" + InputText + ".json";
 
     log_singleton::Write_Log(SourceFilePath, Log_Level::General);
-    //    qDebug() << SourceFilePath;
-    //    qDebug() << DestFilePath;
     if (QFile::copy(SourceFilePath, DestFilePath)) {
         log_singleton::Write_Log("文件复制成功", Log_Level::General);
         if (!QFile::exists(DestFilePath))
@@ -241,14 +205,12 @@ void JsonRecipeWidget::DeleteRecipe()
     }
 }
 
-void JsonRecipeWidget::slot_RecipeChanged(JsonParse* m_RecipeChanged)
+void JsonRecipeWidget::slot_RecipeChanged(JsonParse2Map* m_RecipeChanged)
 {
     CurrentRecipe = m_RecipeChanged;
-    TreeWidget->clear();
 
-    //重新读取参数
     //写入参数
-    InitTreeWidget();
+    ReadValue2Tree();
     QDateTime currentDateTime = QDateTime::currentDateTime();
     QString currentDateTimeString = currentDateTime.toString("yyyy-MM-dd hh:mm:ss");
 
@@ -260,6 +222,8 @@ void JsonRecipeWidget::slot_RecipeChanged(JsonParse* m_RecipeChanged)
 
 void JsonRecipeWidget::ReadValue2Tree()
 {
+    //读取参数
+    ReadParamsFromRecipe();
     //刷新前先清空
     while (rootItem4GlassMeasure->childCount() > 0) {
         QTreeWidgetItem* child = rootItem4GlassMeasure->takeChild(0);
@@ -270,23 +234,19 @@ void JsonRecipeWidget::ReadValue2Tree()
         delete child;
     }
 
-    //    SetValue2Tree(ParamType::LENGTH, QString::number(CurrentRecipe->Length), rootItem);
-    //    SetValue2Tree(ParamType::LENGTH_ERROR, QString::number(CurrentRecipe->LengthError), rootItem);
-    //    SetValue2Tree(ParamType::WIDTH, QString::number(CurrentRecipe->Width), rootItem);
-    //    SetValue2Tree(ParamType::WIDTH_ERROR, QString::number(CurrentRecipe->WidthError), rootItem);
-    //    SetValue2Tree(ParamType::DIAGONAL1, QString::number(CurrentRecipe->Diagonal1), rootItem);
-    //    SetValue2Tree(ParamType::DIAGONAL1_ERROR, QString::number(CurrentRecipe->Diagonal1Error), rootItem);
-    //    SetValue2Tree(ParamType::DIAGONAL2, QString::number(CurrentRecipe->Diagonal2), rootItem);
-    //    SetValue2Tree(ParamType::DIAGONAL2_ERROR, QString::number(CurrentRecipe->Diagonal2Error), rootItem);
+    for (int i = 0; i < Params4GlassMeasure.count(); i++) {
+        QTreeWidgetItem* child = new QTreeWidgetItem(rootItem4GlassMeasure);
+        child->setText(0, Params4GlassMeasure[i].Name);
+        child->setText(1, QString::number(Params4GlassMeasure[i].Value));
+        rootItem4GlassMeasure->addChild(child);
+    }
 
-    //    SetValue2Tree(ParamType::LENGTH_2, QString::number(CurrentRecipe->Length_2), rootItem1);
-    //    SetValue2Tree(ParamType::LENGTH_ERROR_2, QString::number(CurrentRecipe->LengthError_2), rootItem1);
-    //    SetValue2Tree(ParamType::WIDTH_2, QString::number(CurrentRecipe->Width_2), rootItem1);
-    //    SetValue2Tree(ParamType::WIDTH_ERROR_2, QString::number(CurrentRecipe->WidthError_2), rootItem1);
-    //    SetValue2Tree(ParamType::DIAGONAL1_2, QString::number(CurrentRecipe->Diagonal1_2), rootItem1);
-    //    SetValue2Tree(ParamType::DIAGONAL1_ERROR_2, QString::number(CurrentRecipe->Diagonal1Error_2), rootItem1);
-    //    SetValue2Tree(ParamType::DIAGONAL2_2, QString::number(CurrentRecipe->Diagonal2_2), rootItem1);
-    //    SetValue2Tree(ParamType::DIAGONAL2_ERROR_2, QString::number(CurrentRecipe->Diagonal2Error_2), rootItem1);
+    for (int i = 0; i < Params4FlawDetect.count(); i++) {
+        QTreeWidgetItem* child = new QTreeWidgetItem(rootItem4FlawDetect);
+        child->setText(0, Params4FlawDetect[i].Name);
+        child->setText(1, QString::number(Params4FlawDetect[i].Value));
+        rootItem4FlawDetect->addChild(child);
+    }
 
     QDateTime currentDateTime = QDateTime::currentDateTime();
     QString currentDateTimeString = currentDateTime.toString("hh:mm:ss") + " 工单: " + cbx_RecipeSelect->currentText() + " 参数已读取";
@@ -298,50 +258,116 @@ void JsonRecipeWidget::ReadValue2Tree()
 
 void JsonRecipeWidget::SaveValue2tree()
 {
-    //    if (abs(CurrentRecipe->Length - rootItem->child(0)->text(1).toDouble()) > 200 || abs(CurrentRecipe->Width - rootItem->child(2)->text(1).toDouble()) > 100)
-    //        isNeedReplot = true;
+    for (int i = 0; i < Params4GlassMeasure.size(); ++i) {
+        Key2Value& item1 = Params4GlassMeasure[i];
+        // 遍历第二个表，查找相同 Name 的元素
+        for (int j = 0; j < rootItem4GlassMeasure->childCount(); ++j) {
+            QString Name = rootItem4GlassMeasure->child(j)->text(0);
+            QString Value = rootItem4GlassMeasure->child(j)->text(1);
+            if (item1.Name == Name) {
+                // 如果找到相同的 Name，用第二个表的 Value 替换第一个表中的 Value
+                item1.Value = Value.toDouble();
+                break;
+            }
+        }
+    }
+    for (int i = 0; i < Params4FlawDetect.size(); ++i) {
+        Key2Value& item1 = Params4FlawDetect[i];
+        for (int j = 0; j < rootItem4FlawDetect->childCount(); ++j) {
+            QString Name = rootItem4FlawDetect->child(j)->text(0);
+            QString Value = rootItem4FlawDetect->child(j)->text(1);
+            if (item1.Name == Name) {
+                item1.Value = Value.toDouble();
+                break;
+            }
+        }
+    }
 
-    //    CurrentRecipe->Length = rootItem->child(0)->text(1).toDouble();
-    //    CurrentRecipe->LengthError = rootItem->child(1)->text(1).toDouble();
-    //    CurrentRecipe->Width = rootItem->child(2)->text(1).toDouble();
-    //    CurrentRecipe->WidthError = rootItem->child(3)->text(1).toDouble();
-    //    CurrentRecipe->Diagonal1 = rootItem->child(4)->text(1).toDouble();
-    //    CurrentRecipe->Diagonal1Error = rootItem->child(5)->text(1).toDouble();
-    //    CurrentRecipe->Diagonal2 = rootItem->child(6)->text(1).toDouble();
-    //    CurrentRecipe->Diagonal2Error = rootItem->child(7)->text(1).toDouble();
-
-    //    CurrentRecipe->Length_2 = rootItem1->child(0)->text(1).toDouble();
-    //    CurrentRecipe->LengthError_2 = rootItem1->child(1)->text(1).toDouble();
-    //    CurrentRecipe->Width_2 = rootItem1->child(2)->text(1).toDouble();
-    //    CurrentRecipe->WidthError_2 = rootItem1->child(3)->text(1).toDouble();
-    //    CurrentRecipe->Diagonal1_2 = rootItem1->child(4)->text(1).toDouble();
-    //    CurrentRecipe->Diagonal1Error_2 = rootItem1->child(5)->text(1).toDouble();
-    //    CurrentRecipe->Diagonal2_2 = rootItem1->child(6)->text(1).toDouble();
-    //    CurrentRecipe->Diagonal2Error_2 = rootItem1->child(7)->text(1).toDouble();
-
-    //    CurrentRecipe->WriteParams();
+    CurrentRecipe->SetValue2Recipe("尺寸测量", Params4GlassMeasure);
+    CurrentRecipe->SetValue2Recipe("缺陷检测", Params4FlawDetect);
+    CurrentRecipe->SaveParamsToFile();
 
     QDateTime currentDateTime = QDateTime::currentDateTime();
     QString currentDateTimeString = currentDateTime.toString("hh:mm:ss") + " 工单参数已保存";
     log_singleton::Write_Log(currentDateTimeString, Log_Level::General);
 
-    if (isNeedReplot) {
-        emit sig_FlawWidgetShouldReplot(); //重绘示意图界面信号
+    lbl_OperationResult->setText(currentDateTimeString);
+    lbl_OperationResult->adjustSize();
+}
+
+void JsonRecipeWidget::GetNewParam()
+{
+    QDialog GetNewParamDialog;
+    QComboBox* SelectParent = new QComboBox(&GetNewParamDialog);
+    SelectParent->addItem("尺寸测量");
+    SelectParent->addItem("缺陷检测");
+    QLineEdit* InputName_edit = new QLineEdit(&GetNewParamDialog);
+    QLineEdit* InputValue_edit = new QLineEdit(&GetNewParamDialog);
+    QPushButton* btn_yes = new QPushButton("确定", &GetNewParamDialog);
+    QString InputName = "";
+    QString InputValue = "";
+    int SelectIndex;
+
+    QObject::connect(btn_yes, &QPushButton::clicked, [&]() {
+        SelectIndex = SelectParent->currentIndex();
+        InputName = InputName_edit->text();
+        InputValue = InputValue_edit->text();
+        GetNewParamDialog.close();
+    });
+    QVBoxLayout* layout = new QVBoxLayout(&GetNewParamDialog);
+    layout->addWidget(SelectParent);
+    layout->addWidget(InputName_edit);
+    layout->addWidget(InputValue_edit);
+    layout->addWidget(btn_yes);
+
+    GetNewParamDialog.exec();
+
+    Key2Value Newer;
+    Newer.Name = InputName;
+    Newer.Value = InputValue.toDouble();
+    if (SelectIndex == 0) {
+        Params4GlassMeasure.append(Newer);
+        QTreeWidgetItem* child = new QTreeWidgetItem(rootItem4GlassMeasure);
+        child->setText(0, InputName);
+        child->setText(1, InputValue);
+        rootItem4GlassMeasure->addChild(child);
+    } else {
+        Params4FlawDetect.append(Newer);
+        QTreeWidgetItem* child = new QTreeWidgetItem(rootItem4FlawDetect);
+        child->setText(0, InputName);
+        child->setText(1, InputValue);
+        rootItem4FlawDetect->addChild(child);
     }
-    isNeedReplot = false;
+    QDateTime currentDateTime = QDateTime::currentDateTime();
+    QString currentDateTimeString = currentDateTime.toString("hh:mm:ss") + " 已新建参数，需要点击保存按钮后存入文件";
+    log_singleton::Write_Log(currentDateTimeString, Log_Level::General);
 
     lbl_OperationResult->setText(currentDateTimeString);
     lbl_OperationResult->adjustSize();
 }
 
-void JsonRecipeWidget::SetValue2Tree(int paramName, QString Value, QTreeWidgetItem* ParentItem)
+void JsonRecipeWidget::DeleteSingleParam()
 {
-    QString Name2String;
-    Name2String = SetItemName(paramName);
-    QTreeWidgetItem* child = new QTreeWidgetItem(ParentItem);
-    child->setText(0, Name2String);
-    child->setText(1, Value);
-    ParentItem->addChild(child);
+    if (SelectedisRootItem) {
+        QDateTime currentDateTime = QDateTime::currentDateTime();
+        QString currentDateTimeString = currentDateTime.toString("hh:mm:ss") + " 无效操作";
+        log_singleton::Write_Log(currentDateTimeString, Log_Level::General);
+        lbl_OperationResult->setText(currentDateTimeString);
+        lbl_OperationResult->adjustSize();
+        return;
+    }
+
+    QString ElementDelete = SelectedParent + "." + SelectedName;
+    CurrentRecipe->DeleteParameter(ElementDelete);
+    CurrentRecipe->SaveParamsToFile();
+    ReadValue2Tree();
+
+    QDateTime currentDateTime = QDateTime::currentDateTime();
+    QString currentDateTimeString = currentDateTime.toString("hh:mm:ss") + " 已删除元素";
+    log_singleton::Write_Log(currentDateTimeString, Log_Level::General);
+
+    lbl_OperationResult->setText(currentDateTimeString);
+    lbl_OperationResult->adjustSize();
 }
 
 void JsonRecipeWidget::slot_ItemDoubleClicked(QTreeWidgetItem* item, int column)
@@ -351,4 +377,18 @@ void JsonRecipeWidget::slot_ItemDoubleClicked(QTreeWidgetItem* item, int column)
     } else {
         item->setFlags(item->flags() & ~(Qt::ItemIsEditable));
     }
+}
+
+void JsonRecipeWidget::slot_ItemSelected(QTreeWidgetItem* item, int column)
+{
+    SelectedName = item->text(0);
+    SelectedValue = item->text(1);
+    if (item->parent() != nullptr) {
+        SelectedParent = item->parent()->text(0);
+        SelectedisRootItem = false;
+    } else {
+        SelectedParent = "";
+        SelectedisRootItem = true;
+    }
+    qDebug() << SelectedParent << "." << SelectedName << ". " << SelectedValue;
 }

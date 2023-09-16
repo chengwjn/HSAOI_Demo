@@ -29,7 +29,7 @@ class SystemSettingForm : public QWidget {
     Q_OBJECT
 
 public:
-    explicit SystemSettingForm(RegParasComm& sig_comm, JsonParse& JsonRecipe, QWidget* parent = nullptr);
+    explicit SystemSettingForm(RegParasComm& sig_comm, JsonParse2Map& JsonRecipe, QWidget* parent = nullptr);
     ~SystemSettingForm();
 
 private:
@@ -41,22 +41,20 @@ private:
     LightControl* LightControlWidget;
     RegParasComm& m_pSig_comm;
     //    JsonRecipeParse& m_JsonRecipe;
-    JsonParse& JSONRECIPE;
+    JsonParse2Map& JSONRECIPE;
 
     CameraParamsWidget* this_CameraParamsWidget;
 
     void SetNavigationBar();
 signals:
-    //    void sig_Deliver_NewRecipe(JsonRecipeParse* m_NewRecipe);
+    void sig_Deliver_NewRecipe(JsonParse2Map* m_NewRecipe);
     void sig_Deliver_NewRecipeName2mainWindow(QString m_NewRecipeName);
-    void sig_Deliver_FromJsonRecipe_FlawWidgetNeedReplot();
 private slots:
     void InitForm();
 
     void slot_ListView_Pressed();
-    //    void slot_JsonRecipe_Changed(JsonRecipeParse* NewRecipe);
+    void slot_JsonRecipe_Changed(JsonParse2Map* NewRecipe);
     void slot_JsonRecipeName_Changed(QString NewRecipeName);
-    void slot_Deliver_FromJsonRecipe_FlawWidgetNeedReplot();
 };
 
 #endif // SYSTEMSETTINGFORM_H

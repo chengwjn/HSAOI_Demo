@@ -8,7 +8,8 @@
 #ifndef JSONRECIPEWIDGET_H
 #define JSONRECIPEWIDGET_H
 
-#include "Parameter/JsonParse.h"
+//#include "Parameter/JsonParse.h"
+#include "Parameter/JsonParse2Map.h"
 #include <QComboBox>
 #include <QDateTime>
 #include <QDialog>
@@ -22,6 +23,8 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+
+
 namespace Ui {
 class JsonRecipeWidget;
 }
@@ -30,17 +33,17 @@ class JsonRecipeWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit JsonRecipeWidget(QWidget* parent = nullptr, JsonParse* Recipe = nullptr);
+    explicit JsonRecipeWidget(QWidget* parent = nullptr, JsonParse2Map* Recipe = nullptr);
     ~JsonRecipeWidget();
 
-    JsonParse* CurrentRecipe;
+    //    JsonParse* CurrentRecipe;
+    JsonParse2Map* CurrentRecipe;
 
 private:
     Ui::JsonRecipeWidget* ui;
 
     void InitTreeWidget();
     void InitRecipesInFiles();
-    QString SetItemName(int ParamName);
     void InitWidgetLayout();
 
     //窗口控件
@@ -49,6 +52,8 @@ private:
     QPushButton* btn_SelectRecipe;
     QPushButton* btn_NewRecipe;
     QPushButton* btn_DeleteRecipe;
+    QPushButton* btn_NewParam;
+    QPushButton* btn_DeleteSingleParam;
 
     QComboBox* cbx_RecipeSelect;
     QLabel* lbl_OperationResult;
@@ -58,23 +63,31 @@ private:
     QTreeWidgetItem* rootItem4FlawDetect;
     QTreeWidgetItem* rootItem2;
 
-    bool isNeedReplot = false;
+    QList<Key2Value> Params4GlassMeasure;
+    QList<Key2Value> Params4FlawDetect;
 
+    void ReadParamsFromRecipe();
+
+    QString SelectedName;
+    QString SelectedValue;
+    QString SelectedParent;
+    bool SelectedisRootItem = false;
 public slots:
     void SelectRecipe();
     void CreateNewRecipe();
     void DeleteRecipe();
-    void slot_RecipeChanged(JsonParse* m_RecipeChanged);
+    void slot_RecipeChanged(JsonParse2Map* m_RecipeChanged);
 
     void ReadValue2Tree();
     void SaveValue2tree();
-    void SetValue2Tree(int paramName, QString Value, QTreeWidgetItem* ParentItem);
+    void GetNewParam();
+    void DeleteSingleParam();
 signals:
     void sig_DeliverName(QString RecipeChanged);
     void sig_CameraParamsChangeRecipe();
-    void sig_FlawWidgetShouldReplot();
 private slots:
     void slot_ItemDoubleClicked(QTreeWidgetItem* item, int column);
+    void slot_ItemSelected(QTreeWidgetItem* item, int column);
 };
 
 #endif // JSONRECIPEWIDGET_H

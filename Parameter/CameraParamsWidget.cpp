@@ -1,13 +1,22 @@
 ﻿#include "CameraParamsWidget.h"
 #include <QWidget>
 
-CameraParamsWidget::CameraParamsWidget(QWidget* parent)
+CameraParamsWidget::CameraParamsWidget(QWidget* parent, JsonParse2Map* RecipeParse)
     : QWidget(parent)
 {
-//    CurrentRecipe = RecipeParse;
+    //    CurrentRecipe = RecipeParse;
+    Recipe = RecipeParse;
     InitWidgetLayout();
     InitTreeWidget();
     connect(TreeWidget, &QTreeWidget::itemDoubleClicked, this, &CameraParamsWidget::slot_ItemDoubleClicked);
+}
+
+void CameraParamsWidget::ReadParamsFromRecipe()
+{
+    Recipe->GetValueFromRecipe("相机0", Params4Camera0);
+    Recipe->GetValueFromRecipe("相机1", Params4Camera1);
+    Recipe->GetValueFromRecipe("相机2", Params4Camera2);
+    Recipe->GetValueFromRecipe("相机3", Params4Camera3);
 }
 
 void CameraParamsWidget::InitWidgetLayout()
@@ -63,6 +72,8 @@ void CameraParamsWidget::InitTreeWidget()
 
 void CameraParamsWidget::ReadValue2Tree()
 {
+    //读取参数
+    ReadParamsFromRecipe();
     //刷新前先清空
     while (rootItem0->childCount() > 0) {
         QTreeWidgetItem* child = rootItem0->takeChild(0);
@@ -80,25 +91,31 @@ void CameraParamsWidget::ReadValue2Tree()
         QTreeWidgetItem* child = rootItem3->takeChild(0);
         delete child;
     }
-//    SetValue2Tree(QString::fromLocal8Bit("拍照行数"), QString::number(CurrentRecipe->Camera_LineNum[0]), rootItem0);
-//    SetValue2Tree(QString::fromLocal8Bit("相机增益"), QString::number(CurrentRecipe->Camera_Gain[0]), rootItem0);
-//    SetValue2Tree(QString::fromLocal8Bit("帧次"), QString::number(CurrentRecipe->Camera_FrameCount[0]), rootItem0);
-//    SetValue2Tree(QString::fromLocal8Bit("曝光时间"), QString::number(CurrentRecipe->Camera_ExposureTime[0]), rootItem0);
 
-//    SetValue2Tree(QString::fromLocal8Bit("拍照行数"), QString::number(CurrentRecipe->Camera_LineNum[1]), rootItem1);
-//    SetValue2Tree(QString::fromLocal8Bit("相机增益"), QString::number(CurrentRecipe->Camera_Gain[1]), rootItem1);
-//    SetValue2Tree(QString::fromLocal8Bit("帧次"), QString::number(CurrentRecipe->Camera_FrameCount[1]), rootItem1);
-//    SetValue2Tree(QString::fromLocal8Bit("曝光时间"), QString::number(CurrentRecipe->Camera_ExposureTime[1]), rootItem1);
-
-//    SetValue2Tree(QString::fromLocal8Bit("拍照行数"), QString::number(CurrentRecipe->Camera_LineNum[2]), rootItem2);
-//    SetValue2Tree(QString::fromLocal8Bit("相机增益"), QString::number(CurrentRecipe->Camera_Gain[2]), rootItem2);
-//    SetValue2Tree(QString::fromLocal8Bit("帧次"), QString::number(CurrentRecipe->Camera_FrameCount[2]), rootItem2);
-//    SetValue2Tree(QString::fromLocal8Bit("曝光时间"), QString::number(CurrentRecipe->Camera_ExposureTime[2]), rootItem2);
-
-//    SetValue2Tree(QString::fromLocal8Bit("拍照行数"), QString::number(CurrentRecipe->Camera_LineNum[3]), rootItem3);
-//    SetValue2Tree(QString::fromLocal8Bit("相机增益"), QString::number(CurrentRecipe->Camera_Gain[3]), rootItem3);
-//    SetValue2Tree(QString::fromLocal8Bit("帧次"), QString::number(CurrentRecipe->Camera_FrameCount[3]), rootItem3);
-//    SetValue2Tree(QString::fromLocal8Bit("曝光时间"), QString::number(CurrentRecipe->Camera_ExposureTime[3]), rootItem3);
+    for (int i = 0; i < Params4Camera0.count(); i++) {
+        QTreeWidgetItem* child = new QTreeWidgetItem(rootItem0);
+        child->setText(0, Params4Camera0[i].Name);
+        child->setText(1, QString::number(Params4Camera0[i].Value));
+        rootItem0->addChild(child);
+    }
+    for (int i = 0; i < Params4Camera1.count(); i++) {
+        QTreeWidgetItem* child = new QTreeWidgetItem(rootItem1);
+        child->setText(0, Params4Camera1[i].Name);
+        child->setText(1, QString::number(Params4Camera1[i].Value));
+        rootItem1->addChild(child);
+    }
+    for (int i = 0; i < Params4Camera2.count(); i++) {
+        QTreeWidgetItem* child = new QTreeWidgetItem(rootItem2);
+        child->setText(0, Params4Camera2[i].Name);
+        child->setText(1, QString::number(Params4Camera2[i].Value));
+        rootItem2->addChild(child);
+    }
+    for (int i = 0; i < Params4Camera3.count(); i++) {
+        QTreeWidgetItem* child = new QTreeWidgetItem(rootItem3);
+        child->setText(0, Params4Camera3[i].Name);
+        child->setText(1, QString::number(Params4Camera3[i].Value));
+        rootItem3->addChild(child);
+    }
 }
 
 void CameraParamsWidget::SetValue2Tree(QString paramName, QString Value, QTreeWidgetItem* ParentItem)
@@ -111,36 +128,61 @@ void CameraParamsWidget::SetValue2Tree(QString paramName, QString Value, QTreeWi
 
 void CameraParamsWidget::slot_SaveValue2Recipe()
 {
-//    CurrentRecipe->Camera_LineNum[0] = rootItem0->child(0)->text(1).toInt();
-//    CurrentRecipe->Camera_Gain[0] = rootItem0->child(1)->text(1).toDouble();
-//    CurrentRecipe->Camera_FrameCount[0] = rootItem0->child(2)->text(1).toInt();
-//    CurrentRecipe->Camera_ExposureTime[0] = rootItem0->child(3)->text(1).toDouble();
-
-//    CurrentRecipe->Camera_LineNum[1] = rootItem1->child(0)->text(1).toInt();
-//    CurrentRecipe->Camera_Gain[1] = rootItem1->child(1)->text(1).toDouble();
-//    CurrentRecipe->Camera_FrameCount[1] = rootItem1->child(2)->text(1).toInt();
-//    CurrentRecipe->Camera_ExposureTime[1] = rootItem1->child(3)->text(1).toDouble();
-
-//    CurrentRecipe->Camera_LineNum[2] = rootItem2->child(0)->text(1).toInt();
-//    CurrentRecipe->Camera_Gain[2] = rootItem2->child(1)->text(1).toDouble();
-//    CurrentRecipe->Camera_FrameCount[2] = rootItem2->child(2)->text(1).toInt();
-//    CurrentRecipe->Camera_ExposureTime[2] = rootItem2->child(3)->text(1).toDouble();
-
-//    CurrentRecipe->Camera_LineNum[3] = rootItem3->child(0)->text(1).toInt();
-//    CurrentRecipe->Camera_Gain[3] = rootItem3->child(1)->text(1).toDouble();
-//    CurrentRecipe->Camera_FrameCount[3] = rootItem3->child(2)->text(1).toInt();
-//    CurrentRecipe->Camera_ExposureTime[3] = rootItem3->child(3)->text(1).toDouble();
-
-//    CurrentRecipe->WriteCamerasParam();
+    for (int i = 0; i < Params4Camera0.size(); ++i) {
+        Key2Value& item1 = Params4Camera0[i];
+        for (int j = 0; j < rootItem0->childCount(); ++j) {
+            QString Name = rootItem0->child(j)->text(0);
+            QString Value = rootItem0->child(j)->text(1);
+            if (item1.Name == Name) {
+                item1.Value = Value.toDouble();
+                break;
+            }
+        }
+    }
+    for (int i = 0; i < Params4Camera1.size(); ++i) {
+        Key2Value& item1 = Params4Camera1[i];
+        for (int j = 0; j < rootItem1->childCount(); ++j) {
+            QString Name = rootItem1->child(j)->text(0);
+            QString Value = rootItem1->child(j)->text(1);
+            if (item1.Name == Name) {
+                item1.Value = Value.toDouble();
+                break;
+            }
+        }
+    }
+    for (int i = 0; i < Params4Camera2.size(); ++i) {
+        Key2Value& item1 = Params4Camera2[i];
+        for (int j = 0; j < rootItem2->childCount(); ++j) {
+            QString Name = rootItem2->child(j)->text(0);
+            QString Value = rootItem2->child(j)->text(1);
+            if (item1.Name == Name) {
+                item1.Value = Value.toDouble();
+                break;
+            }
+        }
+    }
+    for (int i = 0; i < Params4Camera3.size(); ++i) {
+        Key2Value& item1 = Params4Camera3[i];
+        for (int j = 0; j < rootItem3->childCount(); ++j) {
+            QString Name = rootItem3->child(j)->text(0);
+            QString Value = rootItem3->child(j)->text(1);
+            if (item1.Name == Name) {
+                item1.Value = Value.toDouble();
+                break;
+            }
+        }
+    }
+    Recipe->SetValue2Recipe("相机0", Params4Camera0);
+    Recipe->SetValue2Recipe("相机1", Params4Camera1);
+    Recipe->SetValue2Recipe("相机2", Params4Camera2);
+    Recipe->SetValue2Recipe("相机3", Params4Camera3);
+    Recipe->SaveParamsToFile();
     //数值只有在重新打开相机后生效
 }
 
 void CameraParamsWidget::slot_ChangeRecipe()
 {
-    TreeWidget->clear();
-//    CurrentRecipe->ReadCamerasParam();
-
-    InitTreeWidget();
+    ReadValue2Tree();
 }
 
 void CameraParamsWidget::slot_ItemDoubleClicked(QTreeWidgetItem* item, int column)

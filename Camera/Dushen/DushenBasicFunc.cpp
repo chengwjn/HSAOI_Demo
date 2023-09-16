@@ -11,23 +11,32 @@
     @Param3      : CameraNum,相机编号
     @Date        : 2023-07-03
 */
-DushenBasicFunc::DushenBasicFunc(QObject* parent, int CameraNum)
+DushenBasicFunc::DushenBasicFunc(QObject* parent, int CameraNum, JsonParse2Map* recipe)
     : QObject(parent)
 {
-//    CameraParamFromRecipe = recipe;
+    //    CameraParamFromRecipe = recipe;
+    m_recipe = recipe;
+    m_CameraNum = CameraNum;
 
     m_handle = 0;
     SoftTriggerFlag = false;
+
     fExpoTime = 0;
     fAnalogGain = 0;
-    //    fExpoTime = CameraParamFromRecipe->Camera_ExposureTime[CameraNum];
-    //    fAnalogGain = CameraParamFromRecipe->Camera_Gain[CameraNum]; //double转float可能出现问题
+    //    QString searchExpoTime = "相机" + QString::number(m_CameraNum) + ".曝光时间";
+    //    QString searchGain = "相机" + QString::number(m_CameraNum) + ".相机增益";
+    //    double expo;
+    //    m_recipe->getParameter(searchExpoTime, expo);
+    //    double gain;
+    //    m_recipe->getParameter(searchGain, gain);
+
+    //    fExpoTime = expo;
+    //    fAnalogGain = gain;
+
     QuickRoiSel = 0;
     ColorSolutionSel = 0;
     bTrigStatus = false;
     CameraState = false;
-
-    m_CameraNum = CameraNum;
 
     //预先刷新相机设备
     if (m_CameraNum == 0)
@@ -255,6 +264,16 @@ bool DushenBasicFunc::slot_OpenFunc(QString DeviceName)
             return false;
         }
         m_FriendlyName = DeviceName;
+
+        //开启时获取一次参数
+        QString searchExpoTime = "相机" + QString::number(m_CameraNum) + ".曝光时间";
+        QString searchGain = "相机" + QString::number(m_CameraNum) + ".相机增益";
+        double expo;
+        m_recipe->getParameter(searchExpoTime, expo);
+        double gain;
+        m_recipe->getParameter(searchGain, gain);
+        fExpoTime = expo;
+        fAnalogGain = gain;
 
         //此处添加一系列初始化流程
         IsMonoCamera(m_handle);

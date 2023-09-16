@@ -4,17 +4,19 @@
 #include <QPainter>
 #include <QtDebug>
 
-FlawShowWidget::FlawShowWidget(QWidget* parent, JsonParse* recipe)
+FlawShowWidget::FlawShowWidget(QWidget* parent, JsonParse2Map* recipe)
     : QWidget(parent)
 {
     RECIPE = recipe;
     m_plot = new QwtPlot(this);
+    clock = new MsvLCDNumClockWidget(this);
 
     slot_ChangeFlawShow();
 
     QHBoxLayout* layout0 = new QHBoxLayout(this);
     this->setLayout(layout0);
     layout0->addWidget(m_plot);
+    layout0->addWidget(clock);
 }
 
 void FlawShowWidget::drawGlass(double x_length, double y_length)
