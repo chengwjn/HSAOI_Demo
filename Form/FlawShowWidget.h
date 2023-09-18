@@ -8,7 +8,6 @@
 #ifndef FLAWSHOWWIDGET_H
 #define FLAWSHOWWIDGET_H
 
-#include "FlawDefine.h"
 #include "Global.h"
 //#include "Parameter/JsonParse.h"
 #include "Form/msvlcdnumclockwidget.h"
@@ -22,6 +21,7 @@
 #include <QScrollArea>
 #include <QTimer>
 #include <QWidget>
+#include <Qwt/qwt_legend.h>
 #include <Qwt/qwt_plot.h>
 #include <Qwt/qwt_plot_canvas.h>
 #include <Qwt/qwt_plot_grid.h>
@@ -30,6 +30,7 @@
 #include <Qwt/qwt_plot_panner.h>
 #include <Qwt/qwt_plot_renderer.h>
 #include <Qwt/qwt_plot_shapeitem.h>
+#include <Qwt/qwt_plot_textlabel.h>
 #include <Qwt/qwt_plot_zoomer.h>
 #include <Qwt/qwt_scale_draw.h>
 #include <Qwt/qwt_scale_widget.h>
@@ -58,6 +59,7 @@ private:
     JsonParse2Map* RECIPE;
 
     MsvLCDNumClockWidget* clock;
+    QwtPlotPicker* picker;
 
 public:
     void drawGlass(double x_length, double y_length); //绘制玻璃
@@ -72,12 +74,16 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent* e);
     void resizeEvent(QResizeEvent* e);
 
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+
 signals:
 public slots:
     void slot_resize();
     void slot_GetGlassSize(GLASSINFO* info);
     void slot_GetFlawPoints(QList<FlawPoint>* n_FlawPointList);
     void slot_ChangeFlawShow();
+    void GetTrackerPoint(const QPointF& point);
 };
 
 #endif // FLAWSHOWWIDGET_H

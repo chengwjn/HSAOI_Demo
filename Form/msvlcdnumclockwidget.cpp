@@ -11,9 +11,6 @@ MsvLCDNumClockWidget::MsvLCDNumClockWidget(QWidget* parent)
     ui->label_date->setAlignment(Qt::AlignCenter);
     ui->label_time->setAlignment(Qt::AlignCenter);
     ui->label_day->setAlignment(Qt::AlignCenter);
-    //    ui->label_date->setStyleSheet("font:24px;color:#00FF00;");
-    //    ui->label_time->setStyleSheet("font:48px;color:#00FF00;");
-    //    ui->label_day->setStyleSheet("font:24px;color:#00FF00;");
 
     ui->label_date->setStyleSheet("color:#00FF00;");
     ui->label_time->setStyleSheet("color:#00FF00;");

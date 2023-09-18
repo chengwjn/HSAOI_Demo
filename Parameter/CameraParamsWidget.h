@@ -46,12 +46,13 @@ private:
 
     void InitWidgetLayout();
     void InitTreeWidget();
-    void ReadValue2Tree();
+
     void SetValue2Tree(QString paramName, QString Value, QTreeWidgetItem* ParentItem);
 signals:
 public slots:
     void slot_SaveValue2Recipe();
     //    void slot_ReadValue2Recipe();
+    void ReadValue2Tree();
     void slot_ChangeRecipe();
 private slots:
     void slot_ItemDoubleClicked(QTreeWidgetItem* item, int column);

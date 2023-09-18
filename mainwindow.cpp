@@ -1,7 +1,6 @@
 ﻿#include "mainwindow.h"
 #include "QLabel"
 #include "math.h"
-#include "stdlib.h"
 #include "ui_mainwindow.h"
 #include <QFile>
 #include <QJsonDocument>
@@ -20,7 +19,7 @@ MainWindow::MainWindow(QWidget* parent)
     ui->setupUi(this);
 
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
-    Recipe = new JsonParse2Map(Global::CurrentRecipe);
+    JsonRecipe = new JsonParse2Map(Global::CurrentRecipe);
 
     initCamera();
     initSignalPlatform();
@@ -32,15 +31,10 @@ MainWindow::MainWindow(QWidget* parent)
 
     //加定时器隔段时间刷新
     time_1 = new QTimer(this);
-    //    time_1->start(100);
     connect(time_1, &QTimer::timeout, this, &MainWindow::slot_CreateNewInfo);
-    //       connect(time_1, &QTimer::timeout, m_FlawShowWidget, &FlawShowWidget::slot_resize);
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
+MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::initMenu()
 {
@@ -54,7 +48,8 @@ void MainWindow::initMenu()
     m_pSettings = new QAction("&设置", this);
     m_pSettings->setToolTip(tr("Device Settings."));
     m_pSettings->setIcon(QIcon(":/toolbar/icons/setup.png"));
-    connect(m_pSettings, SIGNAL(triggered()), this, SLOT(slot_ShowSystemSettingForm()));
+    connect(m_pSettings, SIGNAL(triggered()), this,
+        SLOT(slot_ShowSystemSettingForm()));
     ui->toolBar->addAction(m_pSettings);
 
     m_pStart = new QAction("&开始", this);
@@ -73,7 +68,8 @@ void MainWindow::initMenu()
     m_pCameraSettings = new QAction("&相机", this);
     m_pCameraSettings->setToolTip(tr("CameraSet."));
     m_pCameraSettings->setIcon(QIcon(":/toolbar/icons/cameraIcon.png"));
-    connect(m_pCameraSettings, SIGNAL(triggered()), this, SLOT(slot_CameraShow()));
+    connect(m_pCameraSettings, SIGNAL(triggered()), this,
+        SLOT(slot_CameraShow()));
     ui->toolBar->addAction(m_pCameraSettings);
 
     ui->toolBar->setIconSize(QSize(40, 40));
@@ -123,7 +119,8 @@ void MainWindow::initLayout()
 void MainWindow::initSignalPlatform()
 {
     sig_comm = new RegParasComm();
-    sig_comm->InitSock(Global::serverIp.toStdString().c_str(), Global::RegParaPort);
+    sig_comm->InitSock(Global::serverIp.toStdString().c_str(),
+        Global::RegParaPort);
     //    sig_comm->ConnectToServer();
 }
 
@@ -133,12 +130,15 @@ void MainWindow::Create_FlawShowWidget()
     Dock_FlawShowView->setObjectName("FlawShow");
     Dock_FlawShowView->setWindowTitle(QString::fromLocal8Bit("缺陷示意图"));
     Dock_FlawShowView->setAllowedAreas(Qt::AllDockWidgetAreas);
-    m_FlawShowWidget = new FlawShowWidget(Dock_FlawShowView, Recipe);
+    m_FlawShowWidget = new FlawShowWidget(Dock_FlawShowView, JsonRecipe);
     Dock_FlawShowView->setWidget(m_FlawShowWidget);
     Dock_FlawShowView->setFeatures(QDockWidget::DockWidgetFloatable);
-    connect(this, SIGNAL(sig_FlawWidgetChange()), m_FlawShowWidget, SLOT(slot_ChangeFlawShow()));
-    connect(this, SIGNAL(sig_DeliverGlassInfo2Table(GLASSINFO*)), m_FlawShowWidget, SLOT(slot_GetGlassSize(GLASSINFO*)));
-    connect(this, SIGNAL(sig_DeliverFlawPoints2Widget(QList<FlawPoint>*)), m_FlawShowWidget, SLOT(slot_GetFlawPoints(QList<FlawPoint>*)));
+    connect(this, SIGNAL(sig_FlawWidgetChange()), m_FlawShowWidget,
+        SLOT(slot_ChangeFlawShow()));
+    connect(this, SIGNAL(sig_DeliverGlassInfo2Table(GLASSINFO*)),
+        m_FlawShowWidget, SLOT(slot_GetGlassSize(GLASSINFO*)));
+    connect(this, SIGNAL(sig_DeliverFlawPoints2Widget(QList<FlawPoint>*)),
+        m_FlawShowWidget, SLOT(slot_GetFlawPoints(QList<FlawPoint>*)));
 }
 
 void MainWindow::Create_GlassStatisticsTable()
@@ -150,7 +150,8 @@ void MainWindow::Create_GlassStatisticsTable()
     m_GlassStatisticTable = new GlassStatisticTableWidget(Dock_GlassStatisticsTableView);
     Dock_GlassStatisticsTableView->setWidget(m_GlassStatisticTable);
     Dock_GlassStatisticsTableView->setFeatures(QDockWidget::DockWidgetFloatable);
-    connect(this, SIGNAL(sig_DeliverGlassInfo2Table(GLASSINFO*)), m_GlassStatisticTable, SLOT(slot_insertRowData(GLASSINFO*)));
+    connect(this, SIGNAL(sig_DeliverGlassInfo2Table(GLASSINFO*)),
+        m_GlassStatisticTable, SLOT(slot_insertRowData(GLASSINFO*)));
 }
 
 void MainWindow::Create_SingleFlawShow()
@@ -159,7 +160,8 @@ void MainWindow::Create_SingleFlawShow()
     Dock_SingleFlawShowView->setObjectName("SingleFlaw");
     Dock_SingleFlawShowView->setWindowTitle("单个缺陷");
     Dock_SingleFlawShowView->setAllowedAreas(Qt::AllDockWidgetAreas);
-    m_SingleFlawShow = new SingleFlawShowWidget(Qt::Horizontal, Qt::Horizontal, Dock_SingleFlawShowView);
+    m_SingleFlawShow = new SingleFlawShowWidget(Qt::Horizontal, Qt::Horizontal,
+        Dock_SingleFlawShowView);
     Dock_SingleFlawShowView->setWidget(m_SingleFlawShow);
     Dock_SingleFlawShowView->setFeatures(QDockWidget::DockWidgetFloatable);
 }
@@ -173,16 +175,18 @@ void MainWindow::Create_CameraShow()
     Camera_widget = new CamerasWidget(Dock_CameraShow, Camera0, Camera1, Camera2, Camera3);
     Dock_CameraShow->setWidget(Camera_widget);
     Dock_CameraShow->setFeatures(QDockWidget::DockWidgetFloatable);
-    connect(this, &MainWindow::sig_StartButton2CameraStart, Camera_widget, &CamerasWidget::slot_CameraStart);
-    connect(this, &MainWindow::sig_StopButton2CameraStop, Camera_widget, &CamerasWidget::slot_CameraStop);
+    connect(this, &MainWindow::sig_StartButton2CameraStart, Camera_widget,
+        &CamerasWidget::slot_CameraStart);
+    connect(this, &MainWindow::sig_StopButton2CameraStop, Camera_widget,
+        &CamerasWidget::slot_CameraStop);
 }
 
 void MainWindow::initCamera()
 {
-    Camera0 = new DushenBasicFunc(this, 0, Recipe);
-    Camera1 = new DushenBasicFunc(this, 1, Recipe);
-    Camera2 = new DushenBasicFunc(this, 2, Recipe);
-    Camera3 = new DushenBasicFunc(this, 3, Recipe);
+    Camera0 = new DushenBasicFunc(this, 0, JsonRecipe);
+    Camera1 = new DushenBasicFunc(this, 1, JsonRecipe);
+    Camera2 = new DushenBasicFunc(this, 2, JsonRecipe);
+    Camera3 = new DushenBasicFunc(this, 3, JsonRecipe);
 }
 
 void MainWindow::slot_CloseSystem()
@@ -194,11 +198,12 @@ void MainWindow::slot_CloseSystem()
 void MainWindow::slot_ShowSystemSettingForm()
 {
     if (SystemSettings == NULL) {
-        SystemSettings = new SystemSettingForm(*sig_comm, *Recipe);
-        connect(SystemSettings, SIGNAL(sig_Deliver_NewRecipeName2mainWindow(QString)),
-            this, SLOT(slot_ChangeRecipe(QString)));
-        connect(this, SIGNAL(sig_DeliverNewRecipe(JsonParse2Map*)),
-            SystemSettings, SLOT(slot_JsonRecipe_Changed(JsonParse2Map*)));
+        SystemSettings = new SystemSettingForm(*sig_comm, *JsonRecipe);
+        connect(SystemSettings,
+            SIGNAL(sig_Deliver_NewRecipeName2mainWindow(QString)), this,
+            SLOT(slot_ChangeRecipe(QString)));
+        connect(this, SIGNAL(sig_DeliverNewRecipe(JsonParse2Map*)), SystemSettings,
+            SLOT(slot_JsonRecipe_Changed(JsonParse2Map*)));
     }
     SystemSettings->setWindowFlags(Qt::Window);
     SystemSettings->setWindowIcon(QIcon(":/toolbar/icons/setup.ico"));
@@ -212,7 +217,7 @@ void MainWindow::slot_ActionStart()
         log_singleton::Write_Log("开始检测!", Log_Level::General);
         SystemStatus = 1;
         emit sig_StartButton2CameraStart();
-        time_1->start(50);
+        time_1->start(100);
         m_pStart->setEnabled(false);
         m_pStop->setEnabled(true);
     }
@@ -230,10 +235,7 @@ void MainWindow::slot_ActionStop()
     }
 }
 
-void MainWindow::slot_CameraShow()
-{
-    Dock_CameraShow->raise();
-}
+void MainWindow::slot_CameraShow() { Dock_CameraShow->raise(); }
 
 //不启用，已集成到内部
 void MainWindow::slot_SaveCamera(QString CameraNum, QString CameraName)
@@ -247,11 +249,11 @@ void MainWindow::slot_ChangeRecipe(QString RecipeName)
 {
     QString recipelog = "获得新工单名: " + RecipeName;
     log_singleton::Write_Log(recipelog, Log_Level::General);
-    Recipe->ChangeParams(RecipeName);
+    JsonRecipe->ChangeParams(RecipeName);
     log_singleton::Write_Log("新工单已被选择", Log_Level::General);
     Global::CurrentRecipe = RecipeName;
     Global::SaveXml();
-    emit sig_DeliverNewRecipe(Recipe);
+    emit sig_DeliverNewRecipe(JsonRecipe);
     emit sig_FlawWidgetChange();
 }
 
@@ -267,18 +269,12 @@ void MainWindow::slot_CreateNewInfo()
     newInfo->isSizeOK = OriginNum % 3 == 0 ? true : false;
 
     double length;
-    Recipe->getParameter("尺寸测量.长度", length);
+    JsonRecipe->getParameter("尺寸测量.长度", length);
     double width;
-    Recipe->getParameter("尺寸测量.宽度", width);
+    JsonRecipe->getParameter("尺寸测量.宽度", width);
 
     newInfo->GlassLength = (OriginNum % 3 + length);
     newInfo->GlassWidth = (OriginNum % 7 + width);
-    //    newInfo->Diagonal1 = OriginNum % 3 + JsonRecipeParam->Diagonal1;
-    //    newInfo->Diagonal2 = OriginNum % 7 + JsonRecipeParam->Diagonal2;
-    //    newInfo->GlassLength = rand() % (int)(length)*0.95;
-    //    newInfo->GlassWidth = rand() % (int)(width)*0.95;
-    //    newInfo->GlassLength = 1000;
-    //    newInfo->GlassWidth = 500;
 
     newInfo->Diagonal1 = sqrt(newInfo->GlassLength * newInfo->GlassLength + newInfo->GlassWidth * newInfo->GlassWidth) + 0.5;
     newInfo->Diagonal2 = sqrt(newInfo->GlassLength * newInfo->GlassLength + newInfo->GlassWidth * newInfo->GlassWidth) - 0.3;
@@ -296,25 +292,17 @@ void MainWindow::slot_CreateNewInfo()
 
     if (OriginNum > 15)
         OriginNum = 0;
-    //    qDebug() << QString::number(OriginNum) << "," << QString::number(newInfo->GlassID);
 
     FlawPointList->clear();
 
-    //    InfoMutex.lock();
-
     for (int i = 0; i < 14; i++) {
         FlawPoint point;
-        //        point.x = (i + 10) * (i + 10) + OriginNum * 30;
-        //        point.y = (i + 20) * (2 + 10) + OriginNum * 40;
-
         point.x = rand() % (int)(newInfo->GlassLength);
         point.y = rand() % (int)(newInfo->GlassWidth);
 
         point.FlawType = i % 7;
         FlawPointList->append(point);
     }
-
-    //    InfoMutex.unlock();
     emit sig_DeliverGlassInfo2Table(newInfo);
     emit sig_DeliverFlawPoints2Widget(FlawPointList);
     m_FlawShowWidget->slot_resize();

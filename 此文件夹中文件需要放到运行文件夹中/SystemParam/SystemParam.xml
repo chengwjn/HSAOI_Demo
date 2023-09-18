@@ -11,21 +11,21 @@
     <Camera3 type="QSTRING" value=""/>
     <Camera3Field type="INT32" value="6"/>
     <!--配方参数-->
-    <CurrentRecipe type="QSTRING" value="RecipeTest0725_1"/>
+    <CurrentRecipe type="QSTRING" value="RecipeTest"/>
     <!--光源控制器寄存器参数-->
-    <LightField1DelayTime type="INT32" addr="0x0098" value="0"/>
-    <LightField1GlowTime type="INT32" addr="0x009C" value="4294967295"/>
-    <LightField2DelayTime type="INT32" addr="0x00A0" value="2816009541"/>
-    <LightField2GlowTime type="INT32" addr="0x00A4" value="32763"/>
-    <LightField3DelayTime type="INT32" addr="0x00A8" value="0"/>
-    <LightField3GlowTime type="INT32" addr="0x00AC" value="618"/>
-    <LightField4DelayTime type="INT32" addr="0x00B0" value="0"/>
-    <LightField4GlowTime type="INT32" addr="0x00B4" value="32763"/>
-    <LightField5DelayTime type="INT32" addr="0x00B8" value="0"/>
-    <LightField5GlowTime type="INT32" addr="0x00BC" value="618"/>
-    <LightField6DelayTime type="INT32" addr="0x00C0" value="0"/>
-    <LightField6GlowTime type="INT32" addr="0x00C4" value="32763"/>
-    <CameraAndLightFieldControl type="INT32" addr="0x0040" value="0"/>
+    <LightField1DelayTime type="INT32" value="0" addr="0x0098"/>
+    <LightField1GlowTime type="INT32" value="4294967295" addr="0x009C"/>
+    <LightField2DelayTime type="INT32" value="2816009541" addr="0x00A0"/>
+    <LightField2GlowTime type="INT32" value="32763" addr="0x00A4"/>
+    <LightField3DelayTime type="INT32" value="0" addr="0x00A8"/>
+    <LightField3GlowTime type="INT32" value="618" addr="0x00AC"/>
+    <LightField4DelayTime type="INT32" value="0" addr="0x00B0"/>
+    <LightField4GlowTime type="INT32" value="32763" addr="0x00B4"/>
+    <LightField5DelayTime type="INT32" value="0" addr="0x00B8"/>
+    <LightField5GlowTime type="INT32" value="618" addr="0x00BC"/>
+    <LightField6DelayTime type="INT32" value="0" addr="0x00C0"/>
+    <LightField6GlowTime type="INT32" value="32763" addr="0x00C4"/>
+    <CameraAndLightFieldControl type="INT32" value="0" addr="0x0040"/>
     <!--网络参数-->
     <serverIp type="QSTRING" value="192.168.1.200"/>
     <RegParaPort type="INT32" value="7002"/>

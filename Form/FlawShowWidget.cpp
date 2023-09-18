@@ -1,22 +1,24 @@
 ﻿#include "FlawShowWidget.h"
 #include "common_func.h"
 #include <QHBoxLayout>
+#include <QLabel>
 #include <QPainter>
 #include <QtDebug>
+#include <Qwt/qwt_picker_machine.h>
 
-FlawShowWidget::FlawShowWidget(QWidget* parent, JsonParse2Map* recipe)
+FlawShowWidget::FlawShowWidget(QWidget* parent, JsonParse2Map* m_recipe)
     : QWidget(parent)
 {
-    RECIPE = recipe;
+    RECIPE = m_recipe;
     m_plot = new QwtPlot(this);
     clock = new MsvLCDNumClockWidget(this);
-
-    slot_ChangeFlawShow();
 
     QHBoxLayout* layout0 = new QHBoxLayout(this);
     this->setLayout(layout0);
     layout0->addWidget(m_plot);
     layout0->addWidget(clock);
+
+    slot_ChangeFlawShow();
 }
 
 void FlawShowWidget::drawGlass(double x_length, double y_length)
@@ -40,7 +42,6 @@ void FlawShowWidget::drawGlass(double x_length, double y_length)
 */
 void FlawShowWidget::drawFlaw(QList<FlawPoint>* m_FlawPointList)
 {
-
     int ListLength = m_FlawPointList->count();
 
     for (int i = 0; i < ListLength; i++) {
@@ -83,37 +84,23 @@ void FlawShowWidget::drawFlaw(QList<FlawPoint>* m_FlawPointList)
 */
 void FlawShowWidget::paintEvent(QPaintEvent* e)
 {
-    //清空上次的点位坐标，加入点位坐标
-    //    FlawPointList.clear();
-
-    //    for (int i = 0; i < 7; i++) {
-    //        FlawPoint point;
-    //        point.x = x + i * 60;
-    //        point.y = y + i * 100;
-    //        point.FlawType = i + 1;
-    //        FlawPointList.append(point);
-    //    }
     if (isGetGlassSize && isGetFlawPoints) {
-
         m_plot->detachItems();
         drawGlass(w, h);
         drawFlaw(&FlawPointList);
-
         m_plot->replot();
     }
 }
 
 /*!
     @Function    : mouseDoubleClickEvent
-    @Description : 双击图上标记点可以弹出缺陷小图的信息
+    @Description : 双击图上标记点可以弹出缺陷小图的信息,不启用
     @Author      : Chengwenjie
     @Date        : 2023-08-23
 */
 void FlawShowWidget::mouseDoubleClickEvent(QMouseEvent* e)
 {
-    unsigned int x_screen = e->x();
-    unsigned int y_screen = e->y();
-    qDebug() << "x:" << x_screen << " y:" << y_screen;
+    //    qDebug() << "x:" << x_screen << " y:" << y_screen;
 
     //屏幕位置与实际位置差的太多
     //如何计算得到真正缺陷位置
@@ -127,11 +114,34 @@ void FlawShowWidget::mouseDoubleClickEvent(QMouseEvent* e)
     //    if (w > 900)
     //        w = 900;
     //    update();
+    //    auto picker = new QwtPlotPicker(m_plot->canvas());
+    //    connect(picker, SIGNAL(selected(const QPointF&)), this, SLOT(GetTrackerPoint(const QPointF&)));
+    //    picker->setStateMachine(new QwtPickerDragPointMachine());
+    //    picker->setTrackerMode(QwtPicker::AlwaysOn);
+    //    picker->setTrackerPen(QColor(Qt::black)); //显示实时的坐标
 }
 
 void FlawShowWidget::resizeEvent(QResizeEvent* e)
 {
     update();
+}
+
+int OnlyConnectOnce = 0;
+void FlawShowWidget::mousePressEvent(QMouseEvent* event)
+{
+
+    picker = new QwtPlotPicker(m_plot->canvas());
+    if (OnlyConnectOnce++ == 0)
+        connect(picker, SIGNAL(selected(const QPointF&)), this, SLOT(GetTrackerPoint(const QPointF&)));
+    picker->setStateMachine(new QwtPickerDragPointMachine());
+    picker->setTrackerMode(QwtPicker::AlwaysOn);
+    picker->setTrackerPen(QColor(Qt::black)); //显示实时的坐标
+
+    //    delete picker;
+}
+
+void FlawShowWidget::mouseMoveEvent(QMouseEvent* event)
+{
 }
 
 void FlawShowWidget::slot_resize()
@@ -162,9 +172,21 @@ void FlawShowWidget::slot_ChangeFlawShow()
     double width;
     RECIPE->getParameter(Keyword4Width, width);
 
-    int MaxLength = length > 2000 ? (length + 100) : 2100;
-    int MaxWidth = width > 1500 ? (width + 100) : 1600;
+    int MaxLength = length > 3000 ? (length + 100) : 3100;
+    int MaxWidth = width > 2000 ? (width + 100) : 2100;
 
     m_plot->setAxisScale(QwtPlot::xBottom, 0, MaxLength);
     m_plot->setAxisScale(QwtPlot::yLeft, 0, MaxWidth);
+}
+
+void FlawShowWidget::GetTrackerPoint(const QPointF& point)
+{
+    qDebug() << "X:" << point.x() << ", Y:" << point.y();
+    double pos_x = point.x();
+    double pos_y = point.y();
+    for (int i = 0; i < FlawPointList.count(); i++) {
+        if (abs(FlawPointList[i].x - pos_x) < 10 && abs(FlawPointList[i].y - pos_y)) {
+            qDebug() << "We got the Point";
+        }
+    }
 }

@@ -9,7 +9,6 @@
 #define DUSHENBASICFUNC_H
 
 #include "Camera/DushenSample/ImageAcquisition.h"
-#include "Global.h"
 //#include "Parameter/JsonRecipeParse.h"
 #include "Parameter/JsonParse2Map.h"
 #include <QDir>

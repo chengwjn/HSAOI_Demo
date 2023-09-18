@@ -15,14 +15,13 @@ JsonRecipeWidget::JsonRecipeWidget(QWidget* parent, JsonParse2Map* RecipeParse)
     this->setWindowTitle(Global::CurrentRecipe);
     InitRecipesInFiles();
     InitTreeWidget();
-    connect(TreeWidget, &QTreeWidget::itemDoubleClicked, this, &JsonRecipeWidget::slot_ItemDoubleClicked);
-    connect(TreeWidget, &QTreeWidget::itemClicked, this, &JsonRecipeWidget::slot_ItemSelected);
+    connect(TreeWidget, &QTreeWidget::itemDoubleClicked, this,
+        &JsonRecipeWidget::slot_ItemDoubleClicked);
+    connect(TreeWidget, &QTreeWidget::itemClicked, this,
+        &JsonRecipeWidget::slot_ItemSelected);
 }
 
-JsonRecipeWidget::~JsonRecipeWidget()
-{
-    delete ui;
-}
+JsonRecipeWidget::~JsonRecipeWidget() { delete ui; }
 
 void JsonRecipeWidget::InitTreeWidget()
 {
@@ -41,8 +40,10 @@ void JsonRecipeWidget::InitTreeWidget()
     rootItem2 = new QTreeWidgetItem(TreeWidget);
     rootItem2->setText(0, "None");
 
-    //    rootItem4GlassMeasure->setFlags(rootItem4GlassMeasure->flags() & ~(Qt::ItemIsEditable));
-    //    rootItem4FlawDetect->setFlags(rootItem4FlawDetect->flags() & ~(Qt::ItemIsEditable));
+    //    rootItem4GlassMeasure->setFlags(rootItem4GlassMeasure->flags() &
+    //    ~(Qt::ItemIsEditable));
+    //    rootItem4FlawDetect->setFlags(rootItem4FlawDetect->flags() &
+    //    ~(Qt::ItemIsEditable));
 
     TreeWidget->setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::SelectedClicked);
     ReadValue2Tree();
@@ -85,7 +86,7 @@ void JsonRecipeWidget::InitWidgetLayout()
     connect(btn_SelectRecipe, SIGNAL(clicked()), this, SLOT(SelectRecipe()));
 
     btn_NewRecipe = new QPushButton(this);
-    btn_NewRecipe->setText("新建");
+    btn_NewRecipe->setText("新建工单");
     connect(btn_NewRecipe, SIGNAL(clicked()), this, SLOT(CreateNewRecipe()));
 
     btn_DeleteRecipe = new QPushButton(this);
@@ -106,7 +107,8 @@ void JsonRecipeWidget::InitWidgetLayout()
 
     btn_DeleteSingleParam = new QPushButton(this);
     btn_DeleteSingleParam->setText("删除元素");
-    connect(btn_DeleteSingleParam, SIGNAL(clicked()), this, SLOT(DeleteSingleParam()));
+    connect(btn_DeleteSingleParam, SIGNAL(clicked()), this,
+        SLOT(DeleteSingleParam()));
 
     ui->Layout_btns->setContentsMargins(10, 10, 10, 10);
     ui->Layout_btns->addWidget(btn_SelectRecipe);
@@ -125,6 +127,7 @@ void JsonRecipeWidget::InitWidgetLayout()
 
 void JsonRecipeWidget::ReadParamsFromRecipe()
 {
+    CurrentRecipe->ReadParamsFromFile();
     CurrentRecipe->GetValueFromRecipe("尺寸测量", Params4GlassMeasure);
     CurrentRecipe->GetValueFromRecipe("缺陷检测", Params4FlawDetect);
 }
@@ -142,11 +145,13 @@ void JsonRecipeWidget::SelectRecipe()
 void JsonRecipeWidget::CreateNewRecipe()
 {
     QDialog GetRecipeNameDialog;
+    QLabel* Info = new QLabel("新建工单");
     QLineEdit* lineEdit = new QLineEdit(&GetRecipeNameDialog);
     QPushButton* Btn_Yes = new QPushButton("确定", &GetRecipeNameDialog);
     QString InputText = "";
 
     QObject::connect(Btn_Yes, &QPushButton::clicked, [&]() {
+        GetRecipeNameDialog.setObjectName("新建工单");
         InputText = lineEdit->text();
         QString Inputlog = "用户输入: " + InputText;
         log_singleton::Write_Log(Inputlog, Log_Level::General);
@@ -154,6 +159,7 @@ void JsonRecipeWidget::CreateNewRecipe()
     });
 
     QVBoxLayout* layout = new QVBoxLayout(&GetRecipeNameDialog);
+    layout->addWidget(Info);
     layout->addWidget(lineEdit);
     layout->addWidget(Btn_Yes);
 
@@ -370,7 +376,8 @@ void JsonRecipeWidget::DeleteSingleParam()
     lbl_OperationResult->adjustSize();
 }
 
-void JsonRecipeWidget::slot_ItemDoubleClicked(QTreeWidgetItem* item, int column)
+void JsonRecipeWidget::slot_ItemDoubleClicked(QTreeWidgetItem* item,
+    int column)
 {
     if (column == 1) {
         item->setFlags(item->flags() | Qt::ItemIsEditable);

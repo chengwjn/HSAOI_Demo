@@ -4,7 +4,6 @@ JsonParse2Map::JsonParse2Map(QString FileName)
 {
     m_filepath = "Recipes/" + FileName + ".json";
     ReadParamsFromFile();
-    //    SaveParamsToFile();
 }
 
 void createNestedJsonObject2(QJsonObject& parentObject, const QList<QString>& keys, int depth, QString finalValue, int ValueType)

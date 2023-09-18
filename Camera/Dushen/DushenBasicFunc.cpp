@@ -269,9 +269,11 @@ bool DushenBasicFunc::slot_OpenFunc(QString DeviceName)
         QString searchExpoTime = "相机" + QString::number(m_CameraNum) + ".曝光时间";
         QString searchGain = "相机" + QString::number(m_CameraNum) + ".相机增益";
         double expo;
-        m_recipe->getParameter(searchExpoTime, expo);
+        if (m_recipe->getParameter(searchExpoTime, expo))
+            qDebug() << "获取曝光时间失败";
         double gain;
-        m_recipe->getParameter(searchGain, gain);
+        if (m_recipe->getParameter(searchGain, gain))
+            qDebug() << "获取相机增益失败";
         fExpoTime = expo;
         fAnalogGain = gain;
 
