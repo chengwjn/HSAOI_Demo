@@ -1,6 +1,5 @@
 #--------------------------------------------
-#   @projectname    HSAOI
-#   @Company        Anhui Haoshi
+#   @projectname    AOI
 #   @MainBuilder    chengwenjie
 #   @CreateDate     2023-06-20
 #---------------------------------------------
@@ -104,7 +103,7 @@ FORMS += \
     mainwindow.ui
 
 TRANSLATIONS += \
-    HSAOI_zh_CN.ts
+    AOI_zh_CN.ts
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

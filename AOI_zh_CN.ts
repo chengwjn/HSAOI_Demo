@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="HSAOI_zh_CN">
+<TS version="2.1" language="AOI_zh_CN">
 <context>
     <name>CamerasWidget</name>
     <message>
